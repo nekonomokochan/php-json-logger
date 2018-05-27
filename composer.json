@@ -1,0 +1,18 @@
+{
+    "name": "nekonomokochan/php-json-logger",
+    "description": "LoggingLibrary for PHP. Output by JSON Format",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "keitakn",
+            "email": "keita.koga.work@gmail.com"
+        }
+    ],
+    "require": {
+        "monolog/monolog": "^1.23"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.1"
+    }
+}
