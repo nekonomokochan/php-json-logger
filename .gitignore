@@ -8,3 +8,6 @@ composer.phar
 # IDEA Setting Files
 .idea
 php-json-logger.iml
+
+# PHPUnit Coverage dir
+coverage
