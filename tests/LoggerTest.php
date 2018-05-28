@@ -14,7 +14,7 @@ class LoggerTest extends TestCase
     /**
      * @throws \Exception
      */
-    public function testInfoSuccess()
+    public function testOutputInfoLog()
     {
         $testData = [
             'title' => 'Test',
