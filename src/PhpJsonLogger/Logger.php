@@ -1,7 +1,6 @@
 <?php
 namespace Nekonomokochan\PhpJsonLogger;
 
-use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonoLogger;
 
@@ -36,16 +35,48 @@ class Logger
     }
 
     /**
-     * Output info log
+     * @param $message
+     * @param array $context
      */
-    public function info()
+    public function info($message, array $context = [])
     {
-        $testData = [
-            'ip'         => '192.168.10.10',
-            'user_agent' => 'Mac',
-        ];
+        $this->monologInstance->addInfo($message, $context);
+    }
 
-        $this->monologInstance->addInfo('info', $testData);
+    /**
+     * @param \Throwable $e
+     * @param array $context
+     */
+    public function error(\Throwable $e, array $context = [])
+    {
+        $stackTrace = [];
+        $i = 0;
+        foreach ($e->getTrace() as $trace) {
+            $format = sprintf(
+                '#%s %s(%s): %s%s%s()',
+                $i,
+                $trace['file'],
+                $trace['line'],
+                $trace['class'],
+                $trace['type'],
+                $trace['function']
+            );
+
+            array_push(
+                $stackTrace,
+                $format
+            );
+
+            $i++;
+        }
+
+        $context['errors']['message'] = $e->getMessage();
+        $context['errors']['code'] = $e->getCode();
+        $context['errors']['file'] = $e->getFile();
+        $context['errors']['line'] = $e->getLine();
+        $context['errors']['trace'] = $stackTrace;
+
+        $this->monologInstance->addError(get_class($e), $context);
     }
 
     /**
