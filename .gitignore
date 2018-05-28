@@ -11,3 +11,7 @@ php-json-logger.iml
 
 # PHPUnit Coverage dir
 coverage
+
+# Debug Log Files
+src/*.log
+*.log
