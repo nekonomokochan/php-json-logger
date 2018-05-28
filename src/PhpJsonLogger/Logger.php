@@ -1,7 +1,6 @@
 <?php
 namespace Nekonomokochan\PhpJsonLogger;
 
-use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonoLogger;
 
@@ -36,16 +35,12 @@ class Logger
     }
 
     /**
-     * Output info log
+     * @param $message
+     * @param array $context
      */
-    public function info()
+    public function info($message, array $context = [])
     {
-        $testData = [
-            'ip'         => '192.168.10.10',
-            'user_agent' => 'Mac',
-        ];
-
-        $this->monologInstance->addInfo('info', $testData);
+        $this->monologInstance->addInfo($message, $context);
     }
 
     /**

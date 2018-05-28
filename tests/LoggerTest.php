@@ -16,8 +16,18 @@ class LoggerTest extends TestCase
      */
     public function testInfoSuccess()
     {
+        $testData = [
+            'title' => 'Test',
+            'price' => 4000,
+            'list'  => [1, 2, 3],
+            'user'  => [
+                'id'   => 100,
+                'name' => 'keitakn',
+            ],
+        ];
+
         $logger = new Logger();
-        $logger->info();
+        $logger->info('🐱', $testData);
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
     }
