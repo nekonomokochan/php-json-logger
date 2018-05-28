@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
  *
  * @package Nekonomokochan\Tests
  */
-class PhpJsonLoggerTest extends TestCase
+class LoggerTest extends TestCase
 {
     /**
      * info log test
