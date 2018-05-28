@@ -18,5 +18,7 @@ class LoggerTest extends TestCase
     {
         $logger = new Logger();
         $logger->info();
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
     }
 }

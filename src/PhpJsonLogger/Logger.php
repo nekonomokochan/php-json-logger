@@ -13,10 +13,15 @@ use Monolog\Logger as MonoLogger;
 class Logger
 {
     /**
-     * @var MonoLogger
+     * @var \Monolog\Logger
      */
-    private $monoLogger;
+    private $monologInstance;
 
+    /**
+     * Logger constructor.
+     *
+     * @throws \Exception
+     */
     public function __construct()
     {
         $file = dirname(__FILE__) . '/' . date('Y-m-d') . '.log';
@@ -26,8 +31,8 @@ class Logger
         $stream = new StreamHandler($file, MonoLogger::INFO);
         $stream->setFormatter($formatter);
 
-        $this->monoLogger = new MonoLogger('PhpJsonLogger');
-        $this->monoLogger->pushHandler($stream);
+        $this->monologInstance = new MonoLogger('PhpJsonLogger');
+        $this->monologInstance->pushHandler($stream);
     }
 
     /**
@@ -40,14 +45,14 @@ class Logger
             'user_agent' => 'Mac',
         ];
 
-        $this->monoLogger->info('info', $testData);
+        $this->monologInstance->addInfo('info', $testData);
     }
 
     /**
-     * @return MonoLogger
+     * @return \Monolog\Logger
      */
-    public function getMonoLogger()
+    public function getMonologInstance()
     {
-        return $this->monoLogger;
+        return $this->monologInstance;
     }
 }
