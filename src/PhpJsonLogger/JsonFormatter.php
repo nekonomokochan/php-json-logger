@@ -29,6 +29,11 @@ class JsonFormatter extends BaseJsonFormatter
             $formattedRecord['extra'] = $record['extra'];
         }
 
+        if (isset($record['context']['errors'])) {
+            $formattedRecord['errors'] = $record['context']['errors'];
+            unset($formattedRecord['context']['errors']);
+        }
+
         $json = $this->toJson($this->normalize($formattedRecord), true) . ($this->appendNewline ? "\n" : '');
 
         return $json;
