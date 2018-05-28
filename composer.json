@@ -1,0 +1,35 @@
+{
+    "name": "nekonomokochan/php-json-logger",
+    "description": "LoggingLibrary for PHP. Output by JSON Format",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "keitakn",
+            "email": "keita.koga.work@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Nekonomokochan\\PhpJsonLogger\\": "src/PhpJsonLogger"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Nekonomokochan\\PhpJsonLogger\\": "src/PhpJsonLogger",
+            "Nekonomokochan\\Tests\\": "tests/"
+        }
+    },
+    "require": {
+        "monolog/monolog": "^1.23"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.1",
+        "friendsofphp/php-cs-fixer": "^2.11"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html coverage",
+        "format": "php-cs-fixer fix --diff -v --config .php_cs.dist"
+    }
+}
