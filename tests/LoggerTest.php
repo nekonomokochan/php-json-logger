@@ -80,7 +80,7 @@ class LoggerTest extends TestCase
         ];
 
         $logger = new Logger();
-        $logger->info('testOutputUserAgent', $testData);
+        $logger->info('testOutputRemoteIpAddress', $testData);
 
         unset($_SERVER['REMOTE_ADDR']);
 
