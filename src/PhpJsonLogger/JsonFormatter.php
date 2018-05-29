@@ -26,6 +26,7 @@ class JsonFormatter extends BaseJsonFormatter
             'remote_ip_address' => $this->extractIp(),
             'user_agent'        => $this->extractUserAgent(),
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s'),
+            'timezone'          => $record['datetime']->getTimezone()->getName(),
         ];
 
         unset($formattedRecord['context']['file']);
