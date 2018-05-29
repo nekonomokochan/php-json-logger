@@ -62,7 +62,7 @@ class JsonFormatter extends BaseJsonFormatter
             return $_SERVER['REMOTE_ADDR'];
         }
 
-        return '';
+        return '127.0.0.1';
     }
 
     /**
