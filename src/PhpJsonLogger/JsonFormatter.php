@@ -22,6 +22,7 @@ class JsonFormatter extends BaseJsonFormatter
             'context'           => $record['context'],
             'level_name'        => $record['level_name'],
             'remote_ip_address' => $this->extractIp(),
+            'user_agent'        => $this->extractUserAgent(),
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s'),
         ];
 
@@ -57,5 +58,17 @@ class JsonFormatter extends BaseJsonFormatter
         }
 
         return '';
+    }
+
+    /**
+     * @return string
+     */
+    private function extractUserAgent()
+    {
+        if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
+            return $_SERVER['HTTP_USER_AGENT'];
+        }
+
+        return 'unknown';
     }
 }
