@@ -17,12 +17,12 @@ class JsonFormatter extends BaseJsonFormatter
     public function format(array $record)
     {
         $formattedRecord = [
+            'log_level'         => $record['level_name'],
             'message'           => $record['message'],
             'trace_id'          => $record['message'],
             'file'              => $record['context']['file'],
             'line'              => $record['context']['line'],
             'context'           => $record['context'],
-            'level_name'        => $record['level_name'],
             'remote_ip_address' => $this->extractIp(),
             'user_agent'        => $this->extractUserAgent(),
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s'),
