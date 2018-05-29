@@ -12,9 +12,9 @@ use PHPUnit\Framework\TestCase;
 class LoggerTest extends TestCase
 {
     /**
-     * @throws \Exception
+     * @test
      */
-    public function testOutputInfoLog()
+    public function outputInfoLog()
     {
         $testData = [
             'title' => 'Test',
@@ -33,9 +33,9 @@ class LoggerTest extends TestCase
     }
 
     /**
-     * @throws \Exception
+     * @test
      */
-    public function testOutputErrorLog()
+    public function outputErrorLog()
     {
         $exception = new \Exception('TestException', 500);
         $context = [
@@ -45,6 +45,44 @@ class LoggerTest extends TestCase
 
         $logger = new Logger();
         $logger->error($exception, $context);
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function outputUserAgent()
+    {
+        $_SERVER['HTTP_USER_AGENT'] = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36';
+
+        $testData = [
+            'name' => 'keitakn',
+        ];
+
+        $logger = new Logger();
+        $logger->info('testOutputUserAgent', $testData);
+
+        unset($_SERVER['HTTP_USER_AGENT']);
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+    }
+
+    /**
+     * @test
+     */
+    public function outputRemoteIpAddress()
+    {
+        $_SERVER['REMOTE_ADDR'] = '192.168.10.20';
+
+        $testData = [
+            'name' => 'keitakn',
+        ];
+
+        $logger = new Logger();
+        $logger->info('testOutputRemoteIpAddress', $testData);
+
+        unset($_SERVER['REMOTE_ADDR']);
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
     }

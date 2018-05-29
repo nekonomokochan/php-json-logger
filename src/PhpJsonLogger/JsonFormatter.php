@@ -19,11 +19,17 @@ class JsonFormatter extends BaseJsonFormatter
         $formattedRecord = [
             'message'           => $record['message'],
             'trace_id'          => $record['message'],
+            'file'              => $record['context']['file'],
+            'line'              => $record['context']['line'],
             'context'           => $record['context'],
             'level_name'        => $record['level_name'],
             'remote_ip_address' => $this->extractIp(),
+            'user_agent'        => $this->extractUserAgent(),
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s'),
         ];
+
+        unset($formattedRecord['context']['file']);
+        unset($formattedRecord['context']['line']);
 
         if (empty($record['extra']) === false) {
             $formattedRecord['extra'] = $record['extra'];
@@ -56,6 +62,18 @@ class JsonFormatter extends BaseJsonFormatter
             return $_SERVER['REMOTE_ADDR'];
         }
 
-        return '';
+        return '127.0.0.1';
+    }
+
+    /**
+     * @return string
+     */
+    private function extractUserAgent()
+    {
+        if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
+            return $_SERVER['HTTP_USER_AGENT'];
+        }
+
+        return 'unknown';
     }
 }

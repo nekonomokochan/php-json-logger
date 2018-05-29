@@ -40,6 +40,10 @@ class Logger
      */
     public function info($message, array $context = [])
     {
+        $trace = debug_backtrace();
+        $context['file'] = $trace[0]['file'];
+        $context['line'] = $trace[0]['line'];
+
         $this->monologInstance->addInfo($message, $context);
     }
 
@@ -69,6 +73,10 @@ class Logger
 
             $i++;
         }
+
+        $trace = debug_backtrace();
+        $context['file'] = $trace[0]['file'];
+        $context['line'] = $trace[0]['line'];
 
         $context['errors']['message'] = $e->getMessage();
         $context['errors']['code'] = $e->getCode();
