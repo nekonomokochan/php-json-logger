@@ -58,8 +58,8 @@ class Logger
     public function info($message, array $context = [])
     {
         $trace = debug_backtrace();
-        $context['file'] = $trace[0]['file'];
-        $context['line'] = $trace[0]['line'];
+        $context['extra']['file'] = $trace[0]['file'];
+        $context['extra']['line'] = $trace[0]['line'];
 
         $this->monologInstance->addInfo($message, $context);
     }
@@ -92,14 +92,14 @@ class Logger
         }
 
         $trace = debug_backtrace();
-        $context['file'] = $trace[0]['file'];
-        $context['line'] = $trace[0]['line'];
+        $context['extra']['file'] = $trace[0]['file'];
+        $context['extra']['line'] = $trace[0]['line'];
 
-        $context['errors']['message'] = $e->getMessage();
-        $context['errors']['code'] = $e->getCode();
-        $context['errors']['file'] = $e->getFile();
-        $context['errors']['line'] = $e->getLine();
-        $context['errors']['trace'] = $stackTrace;
+        $context['extra']['errors']['message'] = $e->getMessage();
+        $context['extra']['errors']['code'] = $e->getCode();
+        $context['extra']['errors']['file'] = $e->getFile();
+        $context['extra']['errors']['line'] = $e->getLine();
+        $context['extra']['errors']['trace'] = $stackTrace;
 
         $this->monologInstance->addError(get_class($e), $context);
     }

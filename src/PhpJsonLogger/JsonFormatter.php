@@ -20,8 +20,8 @@ class JsonFormatter extends BaseJsonFormatter
             'log_level'         => $record['level_name'],
             'message'           => $record['message'],
             'trace_id'          => $record['extra']['trace_id'],
-            'file'              => $record['context']['file'],
-            'line'              => $record['context']['line'],
+            'file'              => $record['context']['extra']['file'],
+            'line'              => $record['context']['extra']['line'],
             'context'           => $record['context'],
             'remote_ip_address' => $this->extractIp(),
             'user_agent'        => $this->extractUserAgent(),
@@ -29,16 +29,11 @@ class JsonFormatter extends BaseJsonFormatter
             'timezone'          => $record['datetime']->getTimezone()->getName(),
         ];
 
-        unset($formattedRecord['context']['file']);
-        unset($formattedRecord['context']['line']);
+        unset($formattedRecord['context']['extra']);
 
-        if (empty($record['extra']) === false) {
-            $formattedRecord['extra'] = $record['extra'];
-        }
-
-        if (isset($record['context']['errors'])) {
-            $formattedRecord['errors'] = $record['context']['errors'];
-            unset($formattedRecord['context']['errors']);
+        if (isset($record['context']['extra']['errors'])) {
+            $formattedRecord['errors'] = $record['context']['extra']['errors'];
+            unset($formattedRecord['context']['extra']['errors']);
         }
 
         $json = $this->toJson($this->normalize($formattedRecord), true) . ($this->appendNewline ? "\n" : '');
