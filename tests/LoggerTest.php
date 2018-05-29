@@ -1,7 +1,7 @@
 <?php
 namespace Nekonomokochan\Tests;
 
-use Nekonomokochan\PhpJsonLogger\Logger;
+use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -26,7 +26,8 @@ class LoggerTest extends TestCase
             ],
         ];
 
-        $logger = new Logger();
+        $loggerBuilder = new LoggerBuilder();
+        $logger = $loggerBuilder->build();
         $logger->info('🐱', $testData);
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
@@ -43,7 +44,8 @@ class LoggerTest extends TestCase
             'email' => 'dummy@email.com',
         ];
 
-        $logger = new Logger();
+        $loggerBuilder = new LoggerBuilder();
+        $logger = $loggerBuilder->build();
         $logger->error($exception, $context);
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
@@ -60,7 +62,8 @@ class LoggerTest extends TestCase
             'name' => 'keitakn',
         ];
 
-        $logger = new Logger();
+        $loggerBuilder = new LoggerBuilder();
+        $logger = $loggerBuilder->build();
         $logger->info('testOutputUserAgent', $testData);
 
         unset($_SERVER['HTTP_USER_AGENT']);
@@ -79,7 +82,8 @@ class LoggerTest extends TestCase
             'name' => 'keitakn',
         ];
 
-        $logger = new Logger();
+        $loggerBuilder = new LoggerBuilder();
+        $logger = $loggerBuilder->build();
         $logger->info('testOutputRemoteIpAddress', $testData);
 
         unset($_SERVER['REMOTE_ADDR']);
