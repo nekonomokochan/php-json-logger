@@ -28,8 +28,8 @@ class JsonFormatter extends BaseJsonFormatter
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s'),
         ];
 
-        unset($record['context']['file']);
-        unset($record['context']['line']);
+        unset($formattedRecord['context']['file']);
+        unset($formattedRecord['context']['line']);
 
         if (empty($record['extra']) === false) {
             $formattedRecord['extra'] = $record['extra'];
