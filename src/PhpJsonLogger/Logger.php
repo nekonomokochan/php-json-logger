@@ -105,6 +105,14 @@ class Logger
     }
 
     /**
+     * @return string
+     */
+    public function getTraceId(): string
+    {
+        return $this->traceId;
+    }
+
+    /**
      * @return \Monolog\Logger
      */
     public function getMonologInstance()

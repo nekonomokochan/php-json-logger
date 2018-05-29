@@ -90,4 +90,22 @@ class LoggerTest extends TestCase
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
     }
+
+    /**
+     * @test
+     */
+    public function setTraceIdIsOutput()
+    {
+        $testData = [
+            'name' => 'keitakn',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setTraceId('MyTraceID');
+        $logger = $loggerBuilder->build();
+        $logger->info('testOutputRemoteIpAddress', $testData);
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('MyTraceID', $logger->getTraceId());
+    }
 }
