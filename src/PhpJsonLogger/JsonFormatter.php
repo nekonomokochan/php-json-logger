@@ -27,6 +27,7 @@ class JsonFormatter extends BaseJsonFormatter
             'user_agent'        => $this->extractUserAgent(),
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s.u'),
             'timezone'          => $record['datetime']->getTimezone()->getName(),
+            'process_time'      => $this->calculateProcessTime($record['extra']['created_time']),
         ];
 
         unset($formattedRecord['context']['php_json_logger']);
@@ -70,5 +71,16 @@ class JsonFormatter extends BaseJsonFormatter
         }
 
         return 'unknown';
+    }
+
+    /**
+     * @param $createdTime
+     * @return float|int
+     */
+    private function calculateProcessTime($createdTime)
+    {
+        $time = microtime(true);
+
+        return $processTime = ($time - $createdTime) * 1000;
     }
 }

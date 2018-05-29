@@ -23,6 +23,11 @@ class Logger
     private $monologInstance;
 
     /**
+     * @var int
+     */
+    private $createdTime;
+
+    /**
      * Logger constructor.
      *
      * @param LoggerBuilder $builder
@@ -30,6 +35,7 @@ class Logger
      */
     public function __construct(LoggerBuilder $builder)
     {
+        $this->createdTime = microtime(true);
         $this->traceId = $builder->getTraceId();
 
         $this->generateTraceIdIfNeeded();
@@ -46,6 +52,7 @@ class Logger
 
         $this->monologInstance->pushProcessor(function ($record) {
             $record['extra']['trace_id'] = $this->traceId;
+            $record['extra']['created_time'] = $this->createdTime;
 
             return $record;
         });
