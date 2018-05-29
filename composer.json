@@ -22,7 +22,8 @@
     },
     "require": {
         "php": ">= 7.0.0",
-        "monolog/monolog": "^1.23"
+        "monolog/monolog": "^1.23",
+        "ramsey/uuid": "^3.7"
     },
     "require-dev": {
         "php": ">= 7.0.0",
