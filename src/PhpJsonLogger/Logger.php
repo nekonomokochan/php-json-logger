@@ -58,8 +58,8 @@ class Logger
     public function info($message, array $context = [])
     {
         $trace = debug_backtrace();
-        $context['extra']['file'] = $trace[0]['file'];
-        $context['extra']['line'] = $trace[0]['line'];
+        $context['php_json_logger']['file'] = $trace[0]['file'];
+        $context['php_json_logger']['line'] = $trace[0]['line'];
 
         $this->monologInstance->addInfo($message, $context);
     }
@@ -92,14 +92,14 @@ class Logger
         }
 
         $trace = debug_backtrace();
-        $context['extra']['file'] = $trace[0]['file'];
-        $context['extra']['line'] = $trace[0]['line'];
+        $context['php_json_logger']['file'] = $trace[0]['file'];
+        $context['php_json_logger']['line'] = $trace[0]['line'];
 
-        $context['extra']['errors']['message'] = $e->getMessage();
-        $context['extra']['errors']['code'] = $e->getCode();
-        $context['extra']['errors']['file'] = $e->getFile();
-        $context['extra']['errors']['line'] = $e->getLine();
-        $context['extra']['errors']['trace'] = $stackTrace;
+        $context['php_json_logger']['errors']['message'] = $e->getMessage();
+        $context['php_json_logger']['errors']['code'] = $e->getCode();
+        $context['php_json_logger']['errors']['file'] = $e->getFile();
+        $context['php_json_logger']['errors']['line'] = $e->getLine();
+        $context['php_json_logger']['errors']['trace'] = $stackTrace;
 
         $this->monologInstance->addError(get_class($e), $context);
     }

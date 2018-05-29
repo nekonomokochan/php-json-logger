@@ -20,8 +20,8 @@ class JsonFormatter extends BaseJsonFormatter
             'log_level'         => $record['level_name'],
             'message'           => $record['message'],
             'trace_id'          => $record['extra']['trace_id'],
-            'file'              => $record['context']['extra']['file'],
-            'line'              => $record['context']['extra']['line'],
+            'file'              => $record['context']['php_json_logger']['file'],
+            'line'              => $record['context']['php_json_logger']['line'],
             'context'           => $record['context'],
             'remote_ip_address' => $this->extractIp(),
             'user_agent'        => $this->extractUserAgent(),
@@ -29,11 +29,10 @@ class JsonFormatter extends BaseJsonFormatter
             'timezone'          => $record['datetime']->getTimezone()->getName(),
         ];
 
-        unset($formattedRecord['context']['extra']);
+        unset($formattedRecord['context']['php_json_logger']);
 
-        if (isset($record['context']['extra']['errors'])) {
-            $formattedRecord['errors'] = $record['context']['extra']['errors'];
-            unset($formattedRecord['context']['extra']['errors']);
+        if (isset($record['context']['php_json_logger']['errors'])) {
+            $formattedRecord['errors'] = $record['context']['php_json_logger']['errors'];
         }
 
         $json = $this->toJson($this->normalize($formattedRecord), true) . ($this->appendNewline ? "\n" : '');
