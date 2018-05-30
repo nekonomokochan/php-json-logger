@@ -134,4 +134,24 @@ class LoggerTest extends TestCase
             $logger->getLogFileName()
         );
     }
+
+    /**
+     * @test
+     */
+    public function setLogLevel()
+    {
+        $testData = [
+            'cat'    => '🐱',
+            'dog'    => '🐶',
+            'rabbit' => '🐰',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setLogLevel(LoggerBuilder::CRITICAL);
+        $logger = $loggerBuilder->build();
+        $logger->info('testSetLogLevel', $testData);
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame(500, $logger->getLogLevel());
+    }
 }

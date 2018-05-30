@@ -18,6 +18,11 @@ class Logger
     private $traceId;
 
     /**
+     * @var int
+     */
+    private $logLevel;
+
+    /**
      * @var \Monolog\Logger
      */
     private $monologInstance;
@@ -47,9 +52,11 @@ class Logger
 
         $this->generateLogFileName($builder->getFileName());
 
+        $this->logLevel = $builder->getLogLevel();
+
         $formatter = new JsonFormatter();
 
-        $stream = new StreamHandler($this->logFileName, MonoLogger::INFO);
+        $stream = new StreamHandler($this->logFileName, $this->logLevel);
         $stream->setFormatter($formatter);
 
         $this->monologInstance = new MonoLogger('PhpJsonLogger');
@@ -122,6 +129,14 @@ class Logger
     public function getTraceId(): string
     {
         return $this->traceId;
+    }
+
+    /**
+     * @return int
+     */
+    public function getLogLevel(): int
+    {
+        return $this->logLevel;
     }
 
     /**
