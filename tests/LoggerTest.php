@@ -108,4 +108,30 @@ class LoggerTest extends TestCase
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame('MyTraceID', $logger->getTraceId());
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function setLogFileName()
+    {
+        $fileName = '/tmp/test-php-json-logger';
+
+        $testData = [
+            'cat'    => '🐱',
+            'dog'    => '🐶',
+            'rabbit' => '🐰',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setFileName($fileName);
+        $logger = $loggerBuilder->build();
+        $logger->info('testSetLogFileName', $testData);
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame(
+            '/tmp/test-php-json-logger-' . date('Y-m-d') . '.log',
+            $logger->getLogFileName()
+        );
+    }
 }

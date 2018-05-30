@@ -14,6 +14,11 @@ class LoggerBuilder
     private $traceId;
 
     /**
+     * @var string
+     */
+    private $fileName;
+
+    /**
      * LoggerBuilder constructor.
      *
      * @param string $traceId
@@ -21,6 +26,7 @@ class LoggerBuilder
     public function __construct(string $traceId = '')
     {
         $this->traceId = $traceId;
+        $this->fileName = '/tmp/php-json-logger';
     }
 
     /**
@@ -37,6 +43,22 @@ class LoggerBuilder
     public function setTraceId(string $traceId)
     {
         $this->traceId = $traceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFileName(): string
+    {
+        return $this->fileName;
+    }
+
+    /**
+     * @param string $fileName
+     */
+    public function setFileName(string $fileName)
+    {
+        $this->fileName = $fileName;
     }
 
     /**
