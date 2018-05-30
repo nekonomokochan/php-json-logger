@@ -529,4 +529,52 @@ class LoggerTest extends TestCase
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame($expectedLog, $resultArray);
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function outputEmergencyLog()
+    {
+        $exception = new \ErrorException('TestCritical', 500);
+        $context = [
+            'name'  => 'keitakn',
+            'email' => 'dummy@email.com',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $logger = $loggerBuilder->build();
+        $logger->emergency($exception, $context);
+
+        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'EMERGENCY',
+            'message'           => 'ErrorException',
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 547,
+            'context'           => $context,
+            'remote_ip_address' => '127.0.0.1',
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => 'Asia/Tokyo',
+            'process_time'      => $resultArray['process_time'],
+            'errors'            => [
+                'message' => 'TestCritical',
+                'code'    => 500,
+                'file'    => __FILE__,
+                'line'    => 539,
+                'trace'   => $resultArray['errors']['trace'],
+            ],
+        ];
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame($expectedLog, $resultArray);
+    }
 }
