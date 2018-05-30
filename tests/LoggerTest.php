@@ -393,4 +393,44 @@ class LoggerTest extends TestCase
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame($expectedLog, $resultArray);
     }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    public function outputWarningLog()
+    {
+        $context = [
+            'title' => 'Test',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setLogLevel(LoggerBuilder::DEBUG);
+        $logger = $loggerBuilder->build();
+        $logger->warning('🐶', $context);
+
+        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'WARNING',
+            'message'           => '🐶',
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 410,
+            'context'           => $context,
+            'remote_ip_address' => '127.0.0.1',
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => 'Asia/Tokyo',
+            'process_time'      => $resultArray['process_time'],
+        ];
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame($expectedLog, $resultArray);
+    }
 }
