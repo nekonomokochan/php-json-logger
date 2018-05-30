@@ -11,6 +11,17 @@ use PHPUnit\Framework\TestCase;
  */
 class LoggerTest extends TestCase
 {
+    public function setUp()
+    {
+        parent::setUp();
+
+        // Delete the log file to assert the log file
+        $defaultFile = '/tmp/php-json-logger-' . date('Y-m-d') . '.log';
+        if (file_exists($defaultFile)) {
+            unlink($defaultFile);
+        }
+    }
+
     /**
      * @test
      */
@@ -30,7 +41,29 @@ class LoggerTest extends TestCase
         $logger = $loggerBuilder->build();
         $logger->info('🐱', $testData);
 
+        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'INFO',
+            'message'           => '🐱',
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 42,
+            'context'           => $testData,
+            'remote_ip_address' => '127.0.0.1',
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => 'Asia/Tokyo',
+            'process_time'      => $resultArray['process_time'],
+        ];
+
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame($expectedLog, $resultArray);
     }
 
     /**
