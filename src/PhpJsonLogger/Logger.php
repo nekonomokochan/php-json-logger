@@ -18,9 +18,24 @@ class Logger
     private $traceId;
 
     /**
+     * @var int
+     */
+    private $logLevel;
+
+    /**
      * @var \Monolog\Logger
      */
     private $monologInstance;
+
+    /**
+     * @var int
+     */
+    private $createdTime;
+
+    /**
+     * @var string
+     */
+    private $logFileName;
 
     /**
      * Logger constructor.
@@ -30,22 +45,26 @@ class Logger
      */
     public function __construct(LoggerBuilder $builder)
     {
+        $this->createdTime = microtime(true);
         $this->traceId = $builder->getTraceId();
 
         $this->generateTraceIdIfNeeded();
 
-        $file = dirname(__FILE__) . '/' . date('Y-m-d') . '.log';
+        $this->generateLogFileName($builder->getFileName());
+
+        $this->logLevel = $builder->getLogLevel();
 
         $formatter = new JsonFormatter();
 
-        $stream = new StreamHandler($file, MonoLogger::INFO);
+        $stream = new StreamHandler($this->logFileName, $this->logLevel);
         $stream->setFormatter($formatter);
 
         $this->monologInstance = new MonoLogger('PhpJsonLogger');
         $this->monologInstance->pushHandler($stream);
 
         $this->monologInstance->pushProcessor(function ($record) {
-            $record['extra']['trace_id'] = $this->traceId;
+            $record['extra']['trace_id'] = $this->getTraceId();
+            $record['extra']['created_time'] = $this->getCreatedTime();
 
             return $record;
         });
@@ -113,11 +132,35 @@ class Logger
     }
 
     /**
+     * @return int
+     */
+    public function getLogLevel(): int
+    {
+        return $this->logLevel;
+    }
+
+    /**
      * @return \Monolog\Logger
      */
     public function getMonologInstance()
     {
         return $this->monologInstance;
+    }
+
+    /**
+     * @return int
+     */
+    public function getCreatedTime(): int
+    {
+        return $this->createdTime;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogFileName(): string
+    {
+        return $this->logFileName;
     }
 
     /**
@@ -128,5 +171,19 @@ class Logger
         if (empty($this->traceId)) {
             $this->traceId = Uuid::uuid4()->toString();
         }
+    }
+
+    /**
+     * @param string $fileName
+     */
+    private function generateLogFileName(string $fileName)
+    {
+        $format = '%s-%s.log';
+
+        $this->logFileName = sprintf(
+            $format,
+            $fileName,
+            date('Y-m-d')
+        );
     }
 }
