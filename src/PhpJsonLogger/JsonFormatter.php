@@ -81,6 +81,6 @@ class JsonFormatter extends BaseJsonFormatter
     {
         $time = microtime(true);
 
-        return $processTime = ($time - $createdTime) * 1000;
+        return ($time - $createdTime) * 1000;
     }
 }
