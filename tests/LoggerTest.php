@@ -27,7 +27,7 @@ class LoggerTest extends TestCase
      */
     public function outputInfoLog()
     {
-        $testData = [
+        $context = [
             'title' => 'Test',
             'price' => 4000,
             'list'  => [1, 2, 3],
@@ -39,7 +39,7 @@ class LoggerTest extends TestCase
 
         $loggerBuilder = new LoggerBuilder();
         $logger = $loggerBuilder->build();
-        $logger->info('🐱', $testData);
+        $logger->info('🐱', $context);
 
         $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
         $resultArray = json_decode($resultJson, true);
@@ -54,7 +54,7 @@ class LoggerTest extends TestCase
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 42,
-            'context'           => $testData,
+            'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
