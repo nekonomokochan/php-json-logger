@@ -128,27 +128,7 @@ class Logger
      */
     public function error(\Throwable $e, array $context = [])
     {
-        $stackTrace = [];
-        $i = 0;
-        foreach ($e->getTrace() as $trace) {
-            $format = sprintf(
-                '#%s %s(%s): %s%s%s()',
-                $i,
-                $trace['file'],
-                $trace['line'],
-                $trace['class'],
-                $trace['type'],
-                $trace['function']
-            );
-
-            array_push(
-                $stackTrace,
-                $format
-            );
-
-            $i++;
-        }
-
+        $formattedTrace = $this->formatStackTrace($e);
         $trace = debug_backtrace();
         $context['php_json_logger']['file'] = $trace[0]['file'];
         $context['php_json_logger']['line'] = $trace[0]['line'];
@@ -157,7 +137,7 @@ class Logger
         $context['php_json_logger']['errors']['code'] = $e->getCode();
         $context['php_json_logger']['errors']['file'] = $e->getFile();
         $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $stackTrace;
+        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
 
         $this->monologInstance->addError(get_class($e), $context);
     }
@@ -168,27 +148,7 @@ class Logger
      */
     public function critical(\Throwable $e, array $context = [])
     {
-        $stackTrace = [];
-        $i = 0;
-        foreach ($e->getTrace() as $trace) {
-            $format = sprintf(
-                '#%s %s(%s): %s%s%s()',
-                $i,
-                $trace['file'],
-                $trace['line'],
-                $trace['class'],
-                $trace['type'],
-                $trace['function']
-            );
-
-            array_push(
-                $stackTrace,
-                $format
-            );
-
-            $i++;
-        }
-
+        $formattedTrace = $this->formatStackTrace($e);
         $trace = debug_backtrace();
         $context['php_json_logger']['file'] = $trace[0]['file'];
         $context['php_json_logger']['line'] = $trace[0]['line'];
@@ -197,7 +157,7 @@ class Logger
         $context['php_json_logger']['errors']['code'] = $e->getCode();
         $context['php_json_logger']['errors']['file'] = $e->getFile();
         $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $stackTrace;
+        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
 
         $this->monologInstance->addCritical(get_class($e), $context);
     }
@@ -208,27 +168,7 @@ class Logger
      */
     public function alert(\Throwable $e, array $context = [])
     {
-        $stackTrace = [];
-        $i = 0;
-        foreach ($e->getTrace() as $trace) {
-            $format = sprintf(
-                '#%s %s(%s): %s%s%s()',
-                $i,
-                $trace['file'],
-                $trace['line'],
-                $trace['class'],
-                $trace['type'],
-                $trace['function']
-            );
-
-            array_push(
-                $stackTrace,
-                $format
-            );
-
-            $i++;
-        }
-
+        $formattedTrace = $this->formatStackTrace($e);
         $trace = debug_backtrace();
         $context['php_json_logger']['file'] = $trace[0]['file'];
         $context['php_json_logger']['line'] = $trace[0]['line'];
@@ -237,7 +177,7 @@ class Logger
         $context['php_json_logger']['errors']['code'] = $e->getCode();
         $context['php_json_logger']['errors']['file'] = $e->getFile();
         $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $stackTrace;
+        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
 
         $this->monologInstance->addAlert(get_class($e), $context);
     }
@@ -248,27 +188,7 @@ class Logger
      */
     public function emergency(\Throwable $e, array $context = [])
     {
-        $stackTrace = [];
-        $i = 0;
-        foreach ($e->getTrace() as $trace) {
-            $format = sprintf(
-                '#%s %s(%s): %s%s%s()',
-                $i,
-                $trace['file'],
-                $trace['line'],
-                $trace['class'],
-                $trace['type'],
-                $trace['function']
-            );
-
-            array_push(
-                $stackTrace,
-                $format
-            );
-
-            $i++;
-        }
-
+        $formattedTrace = $this->formatStackTrace($e);
         $trace = debug_backtrace();
         $context['php_json_logger']['file'] = $trace[0]['file'];
         $context['php_json_logger']['line'] = $trace[0]['line'];
@@ -277,7 +197,7 @@ class Logger
         $context['php_json_logger']['errors']['code'] = $e->getCode();
         $context['php_json_logger']['errors']['file'] = $e->getFile();
         $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $stackTrace;
+        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
 
         $this->monologInstance->addEmergency(get_class($e), $context);
     }
@@ -344,5 +264,35 @@ class Logger
             $fileName,
             date('Y-m-d')
         );
+    }
+
+    /**
+     * @param \Throwable $e
+     * @return array
+     */
+    private function formatStackTrace(\Throwable $e): array
+    {
+        $stackTrace = [];
+        $i = 0;
+        foreach ($e->getTrace() as $trace) {
+            $format = sprintf(
+                '#%s %s(%s): %s%s%s()',
+                $i,
+                $trace['file'] ?? '',
+                $trace['line'] ?? '',
+                $trace['class'] ?? '',
+                $trace['type'] ?? '',
+                $trace['function'] ?? ''
+            );
+
+            array_push(
+                $stackTrace,
+                $format
+            );
+
+            $i++;
+        }
+
+        return $stackTrace;
     }
 }
