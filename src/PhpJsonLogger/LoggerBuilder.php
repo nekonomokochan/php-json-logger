@@ -74,6 +74,16 @@ class LoggerBuilder
     private $fileName;
 
     /**
+     * @var array
+     */
+    private $skipClassesPartials = ['Nekonomokochan\\PhpJsonLogger\\'];
+
+    /**
+     * @var int
+     */
+    private $skipStackFramesCount = 0;
+
+    /**
      * LoggerBuilder constructor.
      *
      * @param string $traceId
@@ -131,6 +141,38 @@ class LoggerBuilder
     public function setFileName(string $fileName)
     {
         $this->fileName = $fileName;
+    }
+
+    /**
+     * @return array
+     */
+    public function getSkipClassesPartials(): array
+    {
+        return $this->skipClassesPartials;
+    }
+
+    /**
+     * @param array $skipClassesPartials
+     */
+    public function setSkipClassesPartials(array $skipClassesPartials)
+    {
+        $this->skipClassesPartials = array_merge($this->skipClassesPartials, $skipClassesPartials);
+    }
+
+    /**
+     * @return int
+     */
+    public function getSkipStackFramesCount(): int
+    {
+        return $this->skipStackFramesCount;
+    }
+
+    /**
+     * @param int $skipStackFramesCount
+     */
+    public function setSkipStackFramesCount(int $skipStackFramesCount)
+    {
+        $this->skipStackFramesCount = $skipStackFramesCount;
     }
 
     /**
