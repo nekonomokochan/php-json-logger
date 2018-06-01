@@ -3,6 +3,7 @@ namespace Nekonomokochan\PhpJsonLogger;
 
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger as MonoLogger;
+use Monolog\Processor\IntrospectionProcessor;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -62,6 +63,12 @@ class Logger
         $this->monologInstance = new MonoLogger('PhpJsonLogger');
         $this->monologInstance->pushHandler($stream);
 
+        $this->monologInstance->pushProcessor(new IntrospectionProcessor(
+            $this->getLogLevel(),
+            $builder->getSkipClassesPartials(),
+            $builder->getSkipStackFramesCount()
+        ));
+
         $this->monologInstance->pushProcessor(function ($record) {
             $record['extra']['trace_id'] = $this->getTraceId();
             $record['extra']['created_time'] = $this->getCreatedTime();
@@ -76,10 +83,6 @@ class Logger
      */
     public function debug($message, $context = [])
     {
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
-
         $this->monologInstance->addDebug($message, $context);
     }
 
@@ -89,10 +92,6 @@ class Logger
      */
     public function info($message, array $context = [])
     {
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
-
         $this->monologInstance->addInfo($message, $context);
     }
 
@@ -102,10 +101,6 @@ class Logger
      */
     public function notice($message, array $context = [])
     {
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
-
         $this->monologInstance->addNotice($message, $context);
     }
 
@@ -115,10 +110,6 @@ class Logger
      */
     public function warning($message, array $context = [])
     {
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
-
         $this->monologInstance->addWarning($message, $context);
     }
 
@@ -129,9 +120,6 @@ class Logger
     public function error(\Throwable $e, array $context = [])
     {
         $formattedTrace = $this->formatStackTrace($e);
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
 
         $context['php_json_logger']['errors']['message'] = $e->getMessage();
         $context['php_json_logger']['errors']['code'] = $e->getCode();
@@ -149,9 +137,6 @@ class Logger
     public function critical(\Throwable $e, array $context = [])
     {
         $formattedTrace = $this->formatStackTrace($e);
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
 
         $context['php_json_logger']['errors']['message'] = $e->getMessage();
         $context['php_json_logger']['errors']['code'] = $e->getCode();
@@ -169,9 +154,6 @@ class Logger
     public function alert(\Throwable $e, array $context = [])
     {
         $formattedTrace = $this->formatStackTrace($e);
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
 
         $context['php_json_logger']['errors']['message'] = $e->getMessage();
         $context['php_json_logger']['errors']['code'] = $e->getCode();
@@ -189,9 +171,6 @@ class Logger
     public function emergency(\Throwable $e, array $context = [])
     {
         $formattedTrace = $this->formatStackTrace($e);
-        $trace = debug_backtrace();
-        $context['php_json_logger']['file'] = $trace[0]['file'];
-        $context['php_json_logger']['line'] = $trace[0]['line'];
 
         $context['php_json_logger']['errors']['message'] = $e->getMessage();
         $context['php_json_logger']['errors']['code'] = $e->getCode();
