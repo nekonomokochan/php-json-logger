@@ -25,7 +25,7 @@ trait ErrorsContextFormat
      */
     protected function formatStackTrace(array $traces): array
     {
-        $stackTrace = [];
+        $formattedTraces = [];
         $length = count($traces);
 
         for ($i = 0; $i < $length; $i++) {
@@ -39,9 +39,9 @@ trait ErrorsContextFormat
                 $traces[$i]['function'] ?? ''
             );
 
-            $stackTrace[] = $format;
+            $formattedTraces[] = $format;
         }
 
-        return $stackTrace;
+        return $formattedTraces;
     }
 }
