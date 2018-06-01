@@ -5,6 +5,7 @@ trait ErrorsContextFormat
 {
     /**
      * @param \Throwable $e
+     * @param array $context
      * @return array
      */
     protected function formatPhpJsonLoggerErrorsContext(\Throwable $e, array $context): array
