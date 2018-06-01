@@ -13,6 +13,8 @@ use Ramsey\Uuid\Uuid;
  */
 class Logger
 {
+    use ErrorsContextFormat;
+
     /**
      * @var string
      */
@@ -119,15 +121,7 @@ class Logger
      */
     public function error(\Throwable $e, array $context = [])
     {
-        $formattedTrace = $this->formatStackTrace($e);
-
-        $context['php_json_logger']['errors']['message'] = $e->getMessage();
-        $context['php_json_logger']['errors']['code'] = $e->getCode();
-        $context['php_json_logger']['errors']['file'] = $e->getFile();
-        $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
-
-        $this->monologInstance->addError(get_class($e), $context);
+        $this->monologInstance->addError(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
@@ -136,15 +130,7 @@ class Logger
      */
     public function critical(\Throwable $e, array $context = [])
     {
-        $formattedTrace = $this->formatStackTrace($e);
-
-        $context['php_json_logger']['errors']['message'] = $e->getMessage();
-        $context['php_json_logger']['errors']['code'] = $e->getCode();
-        $context['php_json_logger']['errors']['file'] = $e->getFile();
-        $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
-
-        $this->monologInstance->addCritical(get_class($e), $context);
+        $this->monologInstance->addCritical(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
@@ -153,15 +139,7 @@ class Logger
      */
     public function alert(\Throwable $e, array $context = [])
     {
-        $formattedTrace = $this->formatStackTrace($e);
-
-        $context['php_json_logger']['errors']['message'] = $e->getMessage();
-        $context['php_json_logger']['errors']['code'] = $e->getCode();
-        $context['php_json_logger']['errors']['file'] = $e->getFile();
-        $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
-
-        $this->monologInstance->addAlert(get_class($e), $context);
+        $this->monologInstance->addAlert(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
@@ -170,15 +148,7 @@ class Logger
      */
     public function emergency(\Throwable $e, array $context = [])
     {
-        $formattedTrace = $this->formatStackTrace($e);
-
-        $context['php_json_logger']['errors']['message'] = $e->getMessage();
-        $context['php_json_logger']['errors']['code'] = $e->getCode();
-        $context['php_json_logger']['errors']['file'] = $e->getFile();
-        $context['php_json_logger']['errors']['line'] = $e->getLine();
-        $context['php_json_logger']['errors']['trace'] = $formattedTrace;
-
-        $this->monologInstance->addEmergency(get_class($e), $context);
+        $this->monologInstance->addEmergency(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
@@ -243,35 +213,5 @@ class Logger
             $fileName,
             date('Y-m-d')
         );
-    }
-
-    /**
-     * @param \Throwable $e
-     * @return array
-     */
-    private function formatStackTrace(\Throwable $e): array
-    {
-        $stackTrace = [];
-        $i = 0;
-        foreach ($e->getTrace() as $trace) {
-            $format = sprintf(
-                '#%s %s(%s): %s%s%s()',
-                $i,
-                $trace['file'] ?? '',
-                $trace['line'] ?? '',
-                $trace['class'] ?? '',
-                $trace['type'] ?? '',
-                $trace['function'] ?? ''
-            );
-
-            array_push(
-                $stackTrace,
-                $format
-            );
-
-            $i++;
-        }
-
-        return $stackTrace;
     }
 }
