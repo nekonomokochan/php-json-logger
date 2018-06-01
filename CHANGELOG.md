@@ -1,7 +1,6 @@
 # Changelog
 
 ## 0.0.3 - 2018-06-01
-
 Refactoring
 - https://github.com/nekonomokochan/php-json-logger/pull/25
 
