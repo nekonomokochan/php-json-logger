@@ -62,6 +62,8 @@ It is output as follows.
 }
 ```
 
+#### How to change output filepath
+
 Default output filepath is `/tmp/php-json-logger-yyyy-mm-dd.log` .
 
 If you want to change the output filepath, please set the output filepath to the builder class.
@@ -107,6 +109,8 @@ It is output as follows.
     "process_time": 215.09790420532227
 }
 ```
+
+#### How to Set `trace_id`
 
 Any value can be set for `trace_id`.
 
