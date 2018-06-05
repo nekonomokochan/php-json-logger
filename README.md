@@ -68,6 +68,8 @@ If you want to change the output filepath, please set the output filepath to the
 
 ```php
 <?php
+use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
+
 $fileName = '/tmp/test-php-json-logger';
 
 $context = [
@@ -103,5 +105,43 @@ It is output as follows.
     "datetime": "2018-06-05 11:28:03.214995",
     "timezone": "Asia\/Tokyo",
     "process_time": 215.09790420532227
+}
+```
+
+Any value can be set for `trace_id`.
+
+This will help you when looking for logs you want.
+
+```php
+<?php
+use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
+
+$context = [
+    'name' => 'keitakn',
+];
+
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setTraceId('MyTraceID');
+$logger = $loggerBuilder->build();
+$logger->info('testSetTraceIdIsOutput', $context);
+```
+
+It is output as follows.
+
+```json
+{
+    "log_level": "INFO",
+    "message": "testSetTraceIdIsOutput",
+    "trace_id": "MyTraceID",
+    "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
+    "line": 214,
+    "context": {
+        "name": "keitakn"
+    },
+    "remote_ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "datetime": "2018-06-05 11:36:02.394269",
+    "timezone": "Asia\/Tokyo",
+    "process_time": 394.35911178588867
 }
 ```
