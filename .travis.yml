@@ -8,7 +8,7 @@ php:
   - nightly
 
 before_script:
-  - php composer install
+  - composer install
 
 script:
   - phpunit
