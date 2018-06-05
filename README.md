@@ -1,8 +1,13 @@
 # php-json-logger
 [![Latest Stable Version](https://poser.pugx.org/nekonomokochan/php-json-logger/v/stable)](https://packagist.org/packages/nekonomokochan/php-json-logger)
+[![Total Downloads](https://poser.pugx.org/nekonomokochan/php-json-logger/downloads)](https://packagist.org/packages/nekonomokochan/php-json-logger)
+[![Latest Unstable Version](https://poser.pugx.org/nekonomokochan/php-json-logger/v/unstable)](https://packagist.org/packages/nekonomokochan/php-json-logger)
+[![License](https://poser.pugx.org/nekonomokochan/php-json-logger/license)](https://packagist.org/packages/nekonomokochan/php-json-logger)
+[![Monthly Downloads](https://poser.pugx.org/nekonomokochan/php-json-logger/d/monthly)](https://packagist.org/packages/nekonomokochan/php-json-logger)
+[![Daily Downloads](https://poser.pugx.org/nekonomokochan/php-json-logger/d/daily)](https://packagist.org/packages/nekonomokochan/php-json-logger)
+[![composer.lock](https://poser.pugx.org/nekonomokochan/php-json-logger/composerlock)](https://packagist.org/packages/nekonomokochan/php-json-logger)
 [![Build Status](https://travis-ci.org/nekonomokochan/php-json-logger.svg?branch=master)](https://travis-ci.org/nekonomokochan/php-json-logger)
 [![Coverage Status](https://coveralls.io/repos/github/nekonomokochan/php-json-logger/badge.svg?branch=master)](https://coveralls.io/github/nekonomokochan/php-json-logger?branch=master)
-[![License](https://poser.pugx.org/nekonomokochan/php-json-logger/license)](https://packagist.org/packages/nekonomokochan/php-json-logger)
 
 LoggingLibrary for PHP. Output by JSON Format
 
