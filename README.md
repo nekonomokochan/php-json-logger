@@ -149,3 +149,40 @@ It is output as follows.
     "process_time": 394.35911178588867
 }
 ```
+
+#### How to change logLevel
+
+Please use `\Nekonomokochan\PhpJsonLogger\LoggerBuilder::setLogLevel()` .
+
+For example, the following code does not output logs.
+
+Because the level is set to `CRITICAL`.
+
+```php
+<?php
+use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
+
+$context = [
+    'cat'    => '🐱',
+    'dog'    => '🐶',
+    'rabbit' => '🐰',
+];
+
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setLogLevel(LoggerBuilder::CRITICAL);
+$logger = $loggerBuilder->build();
+$logger->info('testSetLogLevel', $context);
+```
+
+You can set the following values for `logLevel` .
+
+These are the same as `logLevel` defined in [Monolog](https://github.com/Seldaek/monolog).
+
+- DEBUG = 100
+- INFO = 200
+- NOTICE = 250
+- WARNING = 300
+- ERROR = 400
+- CRITICAL = 500
+- ALERT = 550
+- EMERGENCY = 600
