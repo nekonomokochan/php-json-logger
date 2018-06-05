@@ -1,5 +1,6 @@
 # php-json-logger
 [![Build Status](https://travis-ci.org/nekonomokochan/php-json-logger.svg?branch=master)](https://travis-ci.org/nekonomokochan/php-json-logger)
+[![Coverage Status](https://coveralls.io/repos/github/nekonomokochan/php-json-logger/badge.svg?branch=master)](https://coveralls.io/github/nekonomokochan/php-json-logger?branch=master)
 
 LoggingLibrary for PHP. Output by JSON Format
 
