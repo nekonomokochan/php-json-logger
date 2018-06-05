@@ -188,3 +188,6 @@ These are the same as `logLevel` defined in [Monolog](https://github.com/Seldaek
 - CRITICAL = 500
 - ALERT = 550
 - EMERGENCY = 600
+
+## License
+MIT
