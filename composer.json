@@ -34,7 +34,7 @@
     },
     "scripts": {
         "test": "phpunit",
-        "test:coverage": "phpunit --coverage-html coverage",
+        "test:coverage:html": "phpunit --coverage-html coverage",
         "format": "php-cs-fixer fix --diff -v --config .php_cs.dist"
     }
 }
