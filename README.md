@@ -1,6 +1,8 @@
 # php-json-logger
 LoggingLibrary for PHP. Output by JSON Format
 
+This Library is mainly intended for use in web applications.
+
 ## Getting Started
 
 ### Install composer package
