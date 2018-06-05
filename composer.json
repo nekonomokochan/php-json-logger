@@ -28,11 +28,13 @@
     "require-dev": {
         "php": ">= 7.0.0",
         "phpunit/phpunit": "^7.1",
-        "friendsofphp/php-cs-fixer": "^2.11"
+        "friendsofphp/php-cs-fixer": "^2.11",
+        "php-coveralls/php-coveralls": "^2.1",
+        "phpunit/phpcov": "^5.0"
     },
     "scripts": {
         "test": "phpunit",
-        "test:coverage": "phpunit --coverage-html coverage",
+        "test:coverage:html": "phpunit --coverage-html coverage",
         "format": "php-cs-fixer fix --diff -v --config .php_cs.dist"
     }
 }
