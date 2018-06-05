@@ -1,4 +1,6 @@
 # php-json-logger
+[![Build Status](https://travis-ci.org/nekonomokochan/php-json-logger.svg?branch=master)](https://travis-ci.org/nekonomokochan/php-json-logger)
+
 LoggingLibrary for PHP. Output by JSON Format
 
 This Library is mainly intended for use in web applications.
