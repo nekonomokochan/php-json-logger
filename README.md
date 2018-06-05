@@ -61,3 +61,47 @@ It is output as follows.
     "process_time": 631.50811195373535
 }
 ```
+
+Default output filepath is `/tmp/php-json-logger-yyyy-mm-dd.log` .
+
+If you want to change the output filepath, please set the output filepath to the builder class.
+
+```php
+<?php
+$fileName = '/tmp/test-php-json-logger';
+
+$context = [
+    'cat'    => '🐱',
+    'dog'    => '🐶',
+    'rabbit' => '🐰',
+];
+
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setFileName($fileName);
+$logger = $loggerBuilder->build();
+$logger->info('testSetLogFileName', $context);
+```
+
+The output filepath is `/tmp/test-php-json-logger-yyyy-mm-dd.log` .
+
+It is output as follows.
+
+```json
+{
+    "log_level": "INFO",
+    "message": "testSetLogFileName",
+    "trace_id": "20f39cdb-dbd8-470c-babd-093a2974d169",
+    "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
+    "line": 263,
+    "context": {
+        "cat": "🐱",
+        "dog": "🐶",
+        "rabbit": "🐰"
+    },
+    "remote_ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "datetime": "2018-06-05 11:28:03.214995",
+    "timezone": "Asia\/Tokyo",
+    "process_time": 215.09790420532227
+}
+```
