@@ -58,7 +58,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -98,7 +98,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
             'errors'            => [
                 'message' => 'TestException',
@@ -148,7 +148,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => $userAgent,
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -191,7 +191,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => $remoteIpAddress,
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -230,7 +230,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -279,7 +279,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -346,7 +346,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -386,7 +386,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -426,7 +426,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
         ];
 
@@ -467,7 +467,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
             'errors'            => [
                 'message' => 'TestCritical',
@@ -515,7 +515,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
             'errors'            => [
                 'message' => 'TestCritical',
@@ -563,7 +563,7 @@ class LoggerTest extends TestCase
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
-            'timezone'          => 'Asia/Tokyo',
+            'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
             'errors'            => [
                 'message' => 'TestCritical',
