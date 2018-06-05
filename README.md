@@ -1,4 +1,5 @@
 # php-json-logger
+[![Latest Stable Version](https://poser.pugx.org/nekonomokochan/php-json-logger/v/stable)](https://packagist.org/packages/nekonomokochan/php-json-logger)
 [![Build Status](https://travis-ci.org/nekonomokochan/php-json-logger.svg?branch=master)](https://travis-ci.org/nekonomokochan/php-json-logger)
 [![Coverage Status](https://coveralls.io/repos/github/nekonomokochan/php-json-logger/badge.svg?branch=master)](https://coveralls.io/github/nekonomokochan/php-json-logger?branch=master)
 
