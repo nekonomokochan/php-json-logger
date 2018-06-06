@@ -1,6 +1,11 @@
 <?php
 namespace Nekonomokochan\PhpJsonLogger;
 
+/**
+ * Trait ErrorsContextFormat
+ *
+ * @package Nekonomokochan\PhpJsonLogger
+ */
 trait ErrorsContextFormat
 {
     /**
