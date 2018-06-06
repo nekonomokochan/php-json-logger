@@ -92,7 +92,7 @@ class LoggerBuilder
     {
         $this->traceId = $traceId;
         $this->logLevel = self::INFO;
-        $this->fileName = '/tmp/php-json-logger';
+        $this->fileName = '/tmp/php-json-logger.log';
     }
 
     /**

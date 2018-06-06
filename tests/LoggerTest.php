@@ -245,8 +245,8 @@ class LoggerTest extends TestCase
      */
     public function setLogFileName()
     {
-        $fileName = '/tmp/test-php-json-logger';
-        $outputLogFile = $fileName . '-' . date('Y-m-d') . '.log';
+        $fileName = '/tmp/test-php-json-logger.log';
+        $outputLogFile = '/tmp/test-php-json-logger-' . date('Y-m-d') . '.log';
         if (file_exists($outputLogFile)) {
             unlink($outputLogFile);
         }
@@ -285,7 +285,7 @@ class LoggerTest extends TestCase
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame(
-            '/tmp/test-php-json-logger-' . date('Y-m-d') . '.log',
+            $fileName,
             $logger->getLogFileName()
         );
         $this->assertSame($expectedLog, $resultArray);
