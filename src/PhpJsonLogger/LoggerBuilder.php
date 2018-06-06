@@ -75,11 +75,13 @@ class LoggerBuilder
 
     /**
      * @var array
+     * @see \Monolog\Processor\IntrospectionProcessor::$skipClassesPartials
      */
     private $skipClassesPartials = ['Nekonomokochan\\PhpJsonLogger\\'];
 
     /**
      * @var int
+     * @see \Monolog\Processor\IntrospectionProcessor::$skipStackFramesCount
      */
     private $skipStackFramesCount = 0;
 
