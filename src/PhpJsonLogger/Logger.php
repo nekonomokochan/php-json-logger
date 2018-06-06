@@ -1,7 +1,7 @@
 <?php
 namespace Nekonomokochan\PhpJsonLogger;
 
-use Monolog\Handler\StreamHandler;
+use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger as MonoLogger;
 use Monolog\Processor\IntrospectionProcessor;
 use Ramsey\Uuid\Uuid;
@@ -53,30 +53,39 @@ class Logger
 
         $this->generateTraceIdIfNeeded();
 
-        $this->generateLogFileName($builder->getFileName());
+        $this->logFileName = $builder->getFileName();
 
         $this->logLevel = $builder->getLogLevel();
 
         $formatter = new JsonFormatter();
 
-        $stream = new StreamHandler($this->logFileName, $this->logLevel);
-        $stream->setFormatter($formatter);
+        // TODO The maxFiles should be configurable from outside
+        $rotating = new RotatingFileHandler(
+            $this->getLogFileName(),
+            7,
+            $this->getLogLevel()
+        );
+        $rotating->setFormatter($formatter);
 
-        $this->monologInstance = new MonoLogger('PhpJsonLogger');
-        $this->monologInstance->pushHandler($stream);
-
-        $this->monologInstance->pushProcessor(new IntrospectionProcessor(
+        $introspection = new IntrospectionProcessor(
             $this->getLogLevel(),
             $builder->getSkipClassesPartials(),
             $builder->getSkipStackFramesCount()
-        ));
+        );
 
-        $this->monologInstance->pushProcessor(function ($record) {
+        $extraRecords = function ($record) {
             $record['extra']['trace_id'] = $this->getTraceId();
             $record['extra']['created_time'] = $this->getCreatedTime();
 
             return $record;
-        });
+        };
+
+        // TODO The channel should be configurable from outside
+        $this->monologInstance = new MonoLogger(
+            'PhpJsonLogger',
+            [$rotating],
+            [$introspection, $extraRecords]
+        );
     }
 
     /**
@@ -199,19 +208,5 @@ class Logger
         if (empty($this->traceId)) {
             $this->traceId = Uuid::uuid4()->toString();
         }
-    }
-
-    /**
-     * @param string $fileName
-     */
-    private function generateLogFileName(string $fileName)
-    {
-        $format = '%s-%s.log';
-
-        $this->logFileName = sprintf(
-            $format,
-            $fileName,
-            date('Y-m-d')
-        );
     }
 }

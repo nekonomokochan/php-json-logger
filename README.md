@@ -84,7 +84,7 @@ If you want to change the output filepath, please set the output filepath to the
 <?php
 use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
 
-$fileName = '/tmp/test-php-json-logger';
+$fileName = '/tmp/test-php-json-logger.log';
 
 $context = [
     'cat'    => '🐱',

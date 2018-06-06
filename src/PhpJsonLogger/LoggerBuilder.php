@@ -59,6 +59,16 @@ class LoggerBuilder
     const EMERGENCY = 600;
 
     /**
+     * @see \Monolog\Processor\IntrospectionProcessor::$skipClassesPartials
+     */
+    const DEFAULT_SKIP_CLASSES_PARTIALS = ['Nekonomokochan\\PhpJsonLogger\\'];
+
+    /**
+     * @see @see \Monolog\Processor\IntrospectionProcessor::$skipStackFramesCount
+     */
+    const DEFAULT_SKIP_STACK_FRAMES_COUNT = 0;
+
+    /**
      * @var string
      */
     private $traceId;
@@ -75,13 +85,15 @@ class LoggerBuilder
 
     /**
      * @var array
+     * @see \Monolog\Processor\IntrospectionProcessor::$skipClassesPartials
      */
-    private $skipClassesPartials = ['Nekonomokochan\\PhpJsonLogger\\'];
+    private $skipClassesPartials = [];
 
     /**
      * @var int
+     * @see \Monolog\Processor\IntrospectionProcessor::$skipStackFramesCount
      */
-    private $skipStackFramesCount = 0;
+    private $skipStackFramesCount;
 
     /**
      * LoggerBuilder constructor.
@@ -92,7 +104,9 @@ class LoggerBuilder
     {
         $this->traceId = $traceId;
         $this->logLevel = self::INFO;
-        $this->fileName = '/tmp/php-json-logger';
+        $this->fileName = '/tmp/php-json-logger.log';
+        $this->setSkipClassesPartials(self::DEFAULT_SKIP_CLASSES_PARTIALS);
+        $this->setSkipStackFramesCount(self::DEFAULT_SKIP_STACK_FRAMES_COUNT);
     }
 
     /**
