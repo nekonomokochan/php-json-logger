@@ -199,5 +199,167 @@ These are the same as `logLevel` defined in [Monolog](https://github.com/Seldaek
 - ALERT = 550
 - EMERGENCY = 600
 
+### Extend and use `\Nekonomokochan\PhpJsonLogger\JsonFormatter`
+
+You can make your own `\Monolog\Logger` using only `\Nekonomokochan\PhpJsonLogger\JsonFormatter`.
+
+This method is useful when you need `\Monolog\Logger` in web application framework(e.g. [Laravel](https://github.com/laravel/laravel)).
+
+The following is sample code.
+
+```php
+<?php
+use Monolog\Logger;
+use Monolog\Handler\RotatingFileHandler;
+use Monolog\Processor\IntrospectionProcessor;
+use Nekonomokochan\PhpJsonLogger\JsonFormatter;
+
+$logFileName = '/tmp/extended-monolog-test.log';
+
+// create extendedMonolog Instance
+$formatter = new JsonFormatter();
+
+$rotating = new RotatingFileHandler(
+    $logFileName,
+    7,
+    Logger::INFO
+);
+$rotating->setFormatter($formatter);
+
+$introspection = new IntrospectionProcessor(
+    Logger::INFO,
+    ['Nekonomokochan\\PhpJsonLogger\\'],
+    0
+);
+
+$extraRecords = function ($record) {
+    $record['extra']['trace_id'] = 'ExtendedMonologTestTraceId';
+    $record['extra']['created_time'] = microtime(true);
+
+    return $record;
+};
+
+$extendedMonolog = new Logger(
+    'ExtendedMonolog',
+    [$rotating],
+    [$introspection, $extraRecords]
+);
+
+// output info log
+$context = [
+    'cat'    => '🐱',
+    'dog'    => '🐶',
+    'rabbit' => '🐰',
+];
+
+$extendedMonolog->info('outputInfoLogTest', $context);
+```
+
+It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows
+
+```json
+{
+    "log_level": "INFO",
+    "message": "outputInfoLogTest",
+    "trace_id": "ExtendedMonologTestTraceId",
+    "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
+    "line": 85,
+    "context": {
+        "cat": "🐱",
+        "dog": "🐶",
+        "rabbit": "🐰"
+    },
+    "remote_ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "datetime": "2018-06-06 17:14:26.042013",
+    "timezone": "Asia\/Tokyo",
+    "process_time": 0.1678466796875
+}
+```
+
+The following code is necessary to output `trace_id` and `process_time`.
+
+```php
+$extraRecords = function ($record) {
+    $record['extra']['trace_id'] = 'ExtendedMonologTestTraceId';
+    $record['extra']['created_time'] = microtime(true);
+
+    return $record;
+};
+```
+
+The code below is the code necessary to normally display the stack trace with JSON.
+
+```php
+$introspection = new IntrospectionProcessor(
+    Logger::INFO,
+    ['Nekonomokochan\\PhpJsonLogger\\'],
+    0
+);
+```
+
+To output the stack trace to the log, execute the following code.
+
+```php
+$exception = new \Exception('ExtendedMonologTest.outputErrorLog', 500);
+$context = [
+    'cat'    => '🐱(=^・^=)🐱',
+    'dog'    => '🐶Uo･ｪ･oU🐶',
+    'rabbit' => '🐰🐰🐰',
+];
+
+$extendedMonolog->error(
+    get_class($exception),
+    $this->formatPhpJsonLoggerErrorsContext($exception, $context)
+);
+```
+
+Please pay attention to the part `$this->formatPhpJsonLoggerErrorsContext($exception, $context)`.
+
+This is necessary processing to format the error log into JSON and output it.
+
+This is the method implemented in `\Nekonomokochan\PhpJsonLogger\ErrorsContextFormat`.
+
+It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows.
+
+```json
+{
+    "log_level": "ERROR",
+    "message": "Exception",
+    "trace_id": "ExtendedMonologTestTraceId",
+    "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
+    "line": 126,
+    "context": {
+        "cat": "🐱(=^・^=)🐱",
+        "dog": "🐶Uo･ｪ･oU🐶",
+        "rabbit": "🐰🐰🐰"
+    },
+    "remote_ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "datetime": "2018-06-06 17:37:57.440757",
+    "timezone": "Asia\/Tokyo",
+    "process_time": 0.16093254089355469,
+    "errors": {
+        "message": "ExtendedMonologTest.outputErrorLog",
+        "code": 500,
+        "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
+        "line": 117,
+        "trace": [
+            "#0 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/Framework\/TestCase.php(1145): Nekonomokochan\\Tests\\ExtendedMonologTest->outputErrorLog()",
+            "#1 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/Framework\/TestCase.php(840): PHPUnit\\Framework\\TestCase->runTest()",
+            "#2 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/Framework\/TestResult.php(645): PHPUnit\\Framework\\TestCase->runBare()",
+            "#3 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/Framework\/TestCase.php(798): PHPUnit\\Framework\\TestResult->run()",
+            "#4 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/Framework\/TestSuite.php(776): PHPUnit\\Framework\\TestCase->run()",
+            "#5 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/TextUI\/TestRunner.php(529): PHPUnit\\Framework\\TestSuite->run()",
+            "#6 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/TextUI\/Command.php(198): PHPUnit\\TextUI\\TestRunner->doRun()",
+            "#7 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/src\/TextUI\/Command.php(151): PHPUnit\\TextUI\\Command->run()",
+            "#8 \/home\/vagrant\/php-json-logger\/vendor\/phpunit\/phpunit\/phpunit(53): PHPUnit\\TextUI\\Command::main()"
+        ]
+    }
+}
+```
+
+If you want to know more detailed usage, please look at `php-json-logger/tests/ExtendedMonologTest.php`.
+
 ## License
 MIT
