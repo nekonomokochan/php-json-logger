@@ -25,97 +25,6 @@ class LoggerTest extends TestCase
     /**
      * @test
      */
-    public function outputInfoLog()
-    {
-        $context = [
-            'title' => 'Test',
-            'price' => 4000,
-            'list'  => [1, 2, 3],
-            'user'  => [
-                'id'   => 100,
-                'name' => 'keitakn',
-            ],
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $logger = $loggerBuilder->build();
-        $logger->info('🐱', $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'INFO',
-            'message'           => '🐱',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 42,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     */
-    public function outputErrorLog()
-    {
-        $exception = new \Exception('TestException', 500);
-        $context = [
-            'name'  => 'keitakn',
-            'email' => 'dummy@email.com',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $logger = $loggerBuilder->build();
-        $logger->error($exception, $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'ERROR',
-            'message'           => 'Exception',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 82,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-            'errors'            => [
-                'message' => 'TestException',
-                'code'    => 500,
-                'file'    => __FILE__,
-                'line'    => 74,
-                'trace'   => $resultArray['errors']['trace'],
-            ],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     */
     public function outputUserAgent()
     {
         $userAgent = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.181 Safari/537.36';
@@ -143,7 +52,7 @@ class LoggerTest extends TestCase
             'message'           => 'testOutputUserAgent',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 130,
+            'line'              => 39,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => $userAgent,
@@ -186,7 +95,7 @@ class LoggerTest extends TestCase
             'message'           => 'testOutputRemoteIpAddress',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 173,
+            'line'              => 82,
             'context'           => $context,
             'remote_ip_address' => $remoteIpAddress,
             'user_agent'        => 'unknown',
@@ -225,7 +134,7 @@ class LoggerTest extends TestCase
             'message'           => 'testSetTraceIdIsOutput',
             'trace_id'          => 'MyTraceID',
             'file'              => __FILE__,
-            'line'              => 214,
+            'line'              => 123,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -274,7 +183,7 @@ class LoggerTest extends TestCase
             'message'           => 'testSetLogFileName',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 263,
+            'line'              => 172,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -313,268 +222,5 @@ class LoggerTest extends TestCase
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame(500, $logger->getLogLevel());
-    }
-
-    /**
-     * @test
-     */
-    public function outputDebugLog()
-    {
-        $context = [
-            'title' => 'Test',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $loggerBuilder->setLogLevel(LoggerBuilder::DEBUG);
-        $logger = $loggerBuilder->build();
-        $logger->debug('🐶', $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'DEBUG',
-            'message'           => '🐶',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 330,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function outputNoticeLog()
-    {
-        $context = [
-            'title' => 'Test',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $loggerBuilder->setLogLevel(LoggerBuilder::DEBUG);
-        $logger = $loggerBuilder->build();
-        $logger->notice('🐶', $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'NOTICE',
-            'message'           => '🐶',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 370,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function outputWarningLog()
-    {
-        $context = [
-            'title' => 'Test',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $loggerBuilder->setLogLevel(LoggerBuilder::DEBUG);
-        $logger = $loggerBuilder->build();
-        $logger->warning('🐶', $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'WARNING',
-            'message'           => '🐶',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 410,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function outputCriticalLog()
-    {
-        $exception = new \ErrorException('TestCritical', 500);
-        $context = [
-            'name'  => 'keitakn',
-            'email' => 'dummy@email.com',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $logger = $loggerBuilder->build();
-        $logger->critical($exception, $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'CRITICAL',
-            'message'           => 'ErrorException',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 451,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-            'errors'            => [
-                'message' => 'TestCritical',
-                'code'    => 500,
-                'file'    => __FILE__,
-                'line'    => 443,
-                'trace'   => $resultArray['errors']['trace'],
-            ],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function outputAlertLog()
-    {
-        $exception = new \ErrorException('TestCritical', 500);
-        $context = [
-            'name'  => 'keitakn',
-            'email' => 'dummy@email.com',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $logger = $loggerBuilder->build();
-        $logger->alert($exception, $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'ALERT',
-            'message'           => 'ErrorException',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 499,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-            'errors'            => [
-                'message' => 'TestCritical',
-                'code'    => 500,
-                'file'    => __FILE__,
-                'line'    => 491,
-                'trace'   => $resultArray['errors']['trace'],
-            ],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
-    }
-
-    /**
-     * @test
-     * @throws \Exception
-     */
-    public function outputEmergencyLog()
-    {
-        $exception = new \ErrorException('TestCritical', 500);
-        $context = [
-            'name'  => 'keitakn',
-            'email' => 'dummy@email.com',
-        ];
-
-        $loggerBuilder = new LoggerBuilder();
-        $logger = $loggerBuilder->build();
-        $logger->emergency($exception, $context);
-
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
-        $resultArray = json_decode($resultJson, true);
-
-        echo "\n ---- Output Log Begin ---- \n";
-        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
-        echo "\n ---- Output Log End   ---- \n";
-
-        $expectedLog = [
-            'log_level'         => 'EMERGENCY',
-            'message'           => 'ErrorException',
-            'trace_id'          => $logger->getTraceId(),
-            'file'              => __FILE__,
-            'line'              => 547,
-            'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
-            'datetime'          => $resultArray['datetime'],
-            'timezone'          => date_default_timezone_get(),
-            'process_time'      => $resultArray['process_time'],
-            'errors'            => [
-                'message' => 'TestCritical',
-                'code'    => 500,
-                'file'    => __FILE__,
-                'line'    => 539,
-                'trace'   => $resultArray['errors']['trace'],
-            ],
-        ];
-
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
-        $this->assertSame($expectedLog, $resultArray);
     }
 }
