@@ -329,4 +329,47 @@ class LoggerTest extends TestCase
         $this->assertSame(2, $logger->getMaxFiles());
         $this->assertSame($expectedLog, $resultArray);
     }
+
+    /**
+     * @test
+     */
+    public function canSetChannel()
+    {
+        $context = [
+            'animals' => '🐱🐶🐰🐱🐹',
+        ];
+
+        $expectedChannel = 'My Favorite Animals';
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setChannel($expectedChannel);
+        $logger = $loggerBuilder->build();
+        $logger->info('testCanSetChannel', $context);
+
+        $resultJson = file_get_contents($this->defaultOutputFileName);
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'INFO',
+            'message'           => 'testCanSetChannel',
+            'channel'           => $expectedChannel,
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 347,
+            'context'           => $context,
+            'remote_ip_address' => '127.0.0.1',
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => date_default_timezone_get(),
+            'process_time'      => $resultArray['process_time'],
+        ];
+
+        $this->assertSame($expectedChannel, $logger->getMonologInstance()->getName());
+        $this->assertSame($expectedChannel, $logger->getChannel());
+        $this->assertSame($expectedLog, $resultArray);
+    }
 }
