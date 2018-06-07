@@ -301,7 +301,7 @@ class LoggerTest extends TestCase
         $loggerBuilder = new LoggerBuilder();
         $loggerBuilder->setMaxFiles(2);
         $logger = $loggerBuilder->build();
-        $logger->info('testSetTraceIdIsOutput', $context);
+        $logger->info('testCanSetMaxFiles', $context);
 
         $resultJson = file_get_contents($this->defaultOutputFileName);
         $resultArray = json_decode($resultJson, true);
@@ -312,7 +312,7 @@ class LoggerTest extends TestCase
 
         $expectedLog = [
             'log_level'         => 'INFO',
-            'message'           => 'testSetTraceIdIsOutput',
+            'message'           => 'testCanSetMaxFiles',
             'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
