@@ -53,7 +53,7 @@ class InfoTest extends TestCase
             'message'           => '🐱',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 45,
+            'line'              => 42,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
