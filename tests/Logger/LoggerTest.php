@@ -7,18 +7,33 @@ use PHPUnit\Framework\TestCase;
 /**
  * Class PhpJsonLoggerTest
  *
+ * Add common test code to this class for all log methods
+ *
  * @package Nekonomokochan\Tests
  */
 class LoggerTest extends TestCase
 {
+    /**
+     * @var string
+     */
+    private $defaultOutputFileBaseName;
+
+    /**
+     * @var string
+     */
+    private $defaultOutputFileName;
+
+    /**
+     * Delete the log file used last time to test the contents of the log file
+     */
     public function setUp()
     {
         parent::setUp();
+        $this->defaultOutputFileBaseName = '/tmp/php-json-logger.log';
+        $this->defaultOutputFileName = '/tmp/php-json-logger-' . date('Y-m-d') . '.log';
 
-        // Delete the log file to assert the log file
-        $defaultFile = '/tmp/php-json-logger-' . date('Y-m-d') . '.log';
-        if (file_exists($defaultFile)) {
-            unlink($defaultFile);
+        if (file_exists($this->defaultOutputFileName)) {
+            unlink($this->defaultOutputFileName);
         }
     }
 
@@ -40,7 +55,7 @@ class LoggerTest extends TestCase
 
         unset($_SERVER['HTTP_USER_AGENT']);
 
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultJson = file_get_contents($this->defaultOutputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -52,7 +67,7 @@ class LoggerTest extends TestCase
             'message'           => 'testOutputUserAgent',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 39,
+            'line'              => 54,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => $userAgent,
@@ -83,7 +98,7 @@ class LoggerTest extends TestCase
 
         unset($_SERVER['REMOTE_ADDR']);
 
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultJson = file_get_contents($this->defaultOutputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -95,7 +110,7 @@ class LoggerTest extends TestCase
             'message'           => 'testOutputRemoteIpAddress',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 82,
+            'line'              => 97,
             'context'           => $context,
             'remote_ip_address' => $remoteIpAddress,
             'user_agent'        => 'unknown',
@@ -122,7 +137,7 @@ class LoggerTest extends TestCase
         $logger = $loggerBuilder->build();
         $logger->info('testSetTraceIdIsOutput', $context);
 
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultJson = file_get_contents($this->defaultOutputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -134,7 +149,7 @@ class LoggerTest extends TestCase
             'message'           => 'testSetTraceIdIsOutput',
             'trace_id'          => 'MyTraceID',
             'file'              => __FILE__,
-            'line'              => 123,
+            'line'              => 138,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -150,14 +165,13 @@ class LoggerTest extends TestCase
 
     /**
      * @test
-     * @throws \Exception
      */
     public function setLogFileName()
     {
-        $fileName = '/tmp/test-php-json-logger.log';
-        $outputLogFile = '/tmp/test-php-json-logger-' . date('Y-m-d') . '.log';
-        if (file_exists($outputLogFile)) {
-            unlink($outputLogFile);
+        $outputFileBaseName = '/tmp/test-php-json-logger.log';
+        $outputFileName = '/tmp/test-php-json-logger-' . date('Y-m-d') . '.log';
+        if (file_exists($outputFileName)) {
+            unlink($outputFileName);
         }
 
         $context = [
@@ -167,11 +181,11 @@ class LoggerTest extends TestCase
         ];
 
         $loggerBuilder = new LoggerBuilder();
-        $loggerBuilder->setFileName($fileName);
+        $loggerBuilder->setFileName($outputFileBaseName);
         $logger = $loggerBuilder->build();
         $logger->info('testSetLogFileName', $context);
 
-        $resultJson = file_get_contents($outputLogFile);
+        $resultJson = file_get_contents($outputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -183,7 +197,7 @@ class LoggerTest extends TestCase
             'message'           => 'testSetLogFileName',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 172,
+            'line'              => 186,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -194,7 +208,7 @@ class LoggerTest extends TestCase
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame(
-            $fileName,
+            $outputFileBaseName,
             $logger->getLogFileName()
         );
         $this->assertSame($expectedLog, $resultArray);
@@ -217,7 +231,7 @@ class LoggerTest extends TestCase
         $logger->info('testSetLogLevel', $context);
 
         $this->assertFalse(
-            file_exists('/tmp/php-json-logger-' . date('Y-m-d') . '.log')
+            file_exists($this->defaultOutputFileName)
         );
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
