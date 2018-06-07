@@ -41,6 +41,12 @@ class Logger
     private $logFileName;
 
     /**
+     * @var int
+     * @see \Monolog\Handler\RotatingFileHandler::$maxFiles
+     */
+    private $maxFiles;
+
+    /**
      * Logger constructor.
      *
      * @param LoggerBuilder $builder
@@ -50,19 +56,16 @@ class Logger
     {
         $this->createdTime = microtime(true);
         $this->traceId = $builder->getTraceId();
-
         $this->generateTraceIdIfNeeded();
-
         $this->logFileName = $builder->getFileName();
-
         $this->logLevel = $builder->getLogLevel();
+        $this->maxFiles = $builder->getMaxFiles();
 
         $formatter = new JsonFormatter();
 
-        // TODO The maxFiles should be configurable from outside
         $rotating = new RotatingFileHandler(
             $this->getLogFileName(),
-            7,
+            $this->maxFiles,
             $this->getLogLevel()
         );
         $rotating->setFormatter($formatter);
@@ -198,6 +201,14 @@ class Logger
     public function getLogFileName(): string
     {
         return $this->logFileName;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxFiles(): int
+    {
+        return $this->maxFiles;
     }
 
     /**

@@ -199,6 +199,19 @@ These are the same as `logLevel` defined in [Monolog](https://github.com/Seldaek
 - ALERT = 550
 - EMERGENCY = 600
 
+#### How to change Log Rotation Date
+
+This is the default setting to save logs for 7 days.
+
+If you want to change the log Rotation date, you can change it with the following code.
+
+The following code sets the log retention period to 2 days.
+
+```php
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setMaxFiles(2);
+```
+
 ### Extend and use `\Nekonomokochan\PhpJsonLogger\JsonFormatter`
 
 You can make your own `\Monolog\Logger` using only `\Nekonomokochan\PhpJsonLogger\JsonFormatter`.

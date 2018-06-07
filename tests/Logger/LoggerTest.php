@@ -283,4 +283,44 @@ class LoggerTest extends TestCase
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame($expectedLog, $resultArray);
     }
+
+    /**
+     * @test
+     */
+    public function canSetMaxFiles()
+    {
+        $context = [
+            'name' => 'keitakn',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setMaxFiles(2);
+        $logger = $loggerBuilder->build();
+        $logger->info('testSetTraceIdIsOutput', $context);
+
+        $resultJson = file_get_contents($this->defaultOutputFileName);
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'INFO',
+            'message'           => 'testSetTraceIdIsOutput',
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 299,
+            'context'           => $context,
+            'remote_ip_address' => '127.0.0.1',
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => date_default_timezone_get(),
+            'process_time'      => $resultArray['process_time'],
+        ];
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame(2, $logger->getMaxFiles());
+        $this->assertSame($expectedLog, $resultArray);
+    }
 }

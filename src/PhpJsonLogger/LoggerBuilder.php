@@ -69,6 +69,11 @@ class LoggerBuilder
     const DEFAULT_SKIP_STACK_FRAMES_COUNT = 0;
 
     /**
+     * @see \Monolog\Handler\RotatingFileHandler::$maxFiles
+     */
+    const DEFAULT_MAX_FILES = 7;
+
+    /**
      * @var string
      */
     private $traceId;
@@ -96,6 +101,12 @@ class LoggerBuilder
     private $skipStackFramesCount;
 
     /**
+     * @var int
+     * @see \Monolog\Handler\RotatingFileHandler::$maxFiles
+     */
+    private $maxFiles;
+
+    /**
      * LoggerBuilder constructor.
      *
      * @param string $traceId
@@ -107,6 +118,7 @@ class LoggerBuilder
         $this->fileName = '/tmp/php-json-logger.log';
         $this->setSkipClassesPartials(self::DEFAULT_SKIP_CLASSES_PARTIALS);
         $this->setSkipStackFramesCount(self::DEFAULT_SKIP_STACK_FRAMES_COUNT);
+        $this->setMaxFiles(self::DEFAULT_MAX_FILES);
     }
 
     /**
@@ -187,6 +199,22 @@ class LoggerBuilder
     public function setSkipStackFramesCount(int $skipStackFramesCount)
     {
         $this->skipStackFramesCount = $skipStackFramesCount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getMaxFiles(): int
+    {
+        return $this->maxFiles;
+    }
+
+    /**
+     * @param int $maxFiles
+     */
+    public function setMaxFiles(int $maxFiles)
+    {
+        $this->maxFiles = $maxFiles;
     }
 
     /**
