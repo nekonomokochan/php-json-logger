@@ -63,6 +63,7 @@ class EmergencyTest extends TestCase
         $expectedLog = [
             'log_level'         => 'EMERGENCY',
             'message'           => 'ErrorException',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 54,

@@ -62,6 +62,7 @@ class CriticalTest extends TestCase
         $expectedLog = [
             'log_level'         => 'CRITICAL',
             'message'           => 'ErrorException',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 53,

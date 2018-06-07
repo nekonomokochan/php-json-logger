@@ -62,6 +62,7 @@ class NoticeTest extends TestCase
         $expectedLog = [
             'log_level'         => 'NOTICE',
             'message'           => '🐶',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 53,
