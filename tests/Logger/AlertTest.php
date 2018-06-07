@@ -12,19 +12,32 @@ use PHPUnit\Framework\TestCase;
  */
 class AlertTest extends TestCase
 {
+    /**
+     * @var string
+     */
+    private $outputFileBaseName;
+
+    /**
+     * @var string
+     */
+    private $outputFileName;
+
+    /**
+     * Delete the log file used last time to test the contents of the log file
+     */
     public function setUp()
     {
         parent::setUp();
-        // Delete the log file to assert the log file
-        $defaultFile = '/tmp/php-json-logger-' . date('Y-m-d') . '.log';
-        if (file_exists($defaultFile)) {
-            unlink($defaultFile);
+        $this->outputFileBaseName = '/tmp/alert-log-test.log';
+        $this->outputFileName = '/tmp/alert-log-test-' . date('Y-m-d') . '.log';
+
+        if (file_exists($this->outputFileName)) {
+            unlink($this->outputFileName);
         }
     }
 
     /**
      * @test
-     * @throws \Exception
      */
     public function outputAlertLog()
     {
@@ -35,10 +48,11 @@ class AlertTest extends TestCase
         ];
 
         $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setFileName($this->outputFileBaseName);
         $logger = $loggerBuilder->build();
         $logger->alert($exception, $context);
 
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultJson = file_get_contents($this->outputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -50,7 +64,7 @@ class AlertTest extends TestCase
             'message'           => 'ErrorException',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 39,
+            'line'              => 53,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -61,7 +75,7 @@ class AlertTest extends TestCase
                 'message' => 'TestCritical',
                 'code'    => 500,
                 'file'    => __FILE__,
-                'line'    => 31,
+                'line'    => 44,
                 'trace'   => $resultArray['errors']['trace'],
             ],
         ];
