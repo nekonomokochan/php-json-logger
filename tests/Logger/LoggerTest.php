@@ -237,4 +237,50 @@ class LoggerTest extends TestCase
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame(500, $logger->getLogLevel());
     }
+
+    /**
+     * @test
+     */
+    public function outputHttpXForwardedFor()
+    {
+        $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.0,10.1.1.1';
+        $_SERVER['REMOTE_ADDR'] = '192.168.10.20';
+
+        $expectedRemoteIpAddress = '10.0.0.0';
+
+        $context = [
+            'name' => 'keitakn',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $logger = $loggerBuilder->build();
+        $logger->info('testOutputHttpXForwardedFor', $context);
+
+        unset($_SERVER['REMOTE_ADDR']);
+        unset($_SERVER['HTTP_X_FORWARDED_FOR']);
+
+        $resultJson = file_get_contents($this->defaultOutputFileName);
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'INFO',
+            'message'           => 'testOutputHttpXForwardedFor',
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 257,
+            'context'           => $context,
+            'remote_ip_address' => $expectedRemoteIpAddress,
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => date_default_timezone_get(),
+            'process_time'      => $resultArray['process_time'],
+        ];
+
+        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame($expectedLog, $resultArray);
+    }
 }
