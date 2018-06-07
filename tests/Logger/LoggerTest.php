@@ -65,6 +65,7 @@ class LoggerTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => 'testOutputUserAgent',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 54,
@@ -108,9 +109,10 @@ class LoggerTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => 'testOutputRemoteIpAddress',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 97,
+            'line'              => 98,
             'context'           => $context,
             'remote_ip_address' => $remoteIpAddress,
             'user_agent'        => 'unknown',
@@ -147,9 +149,10 @@ class LoggerTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => 'testSetTraceIdIsOutput',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => 'MyTraceID',
             'file'              => __FILE__,
-            'line'              => 138,
+            'line'              => 140,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -195,9 +198,10 @@ class LoggerTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => 'testSetLogFileName',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 186,
+            'line'              => 189,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -269,9 +273,10 @@ class LoggerTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => 'testOutputHttpXForwardedFor',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 257,
+            'line'              => 261,
             'context'           => $context,
             'remote_ip_address' => $expectedRemoteIpAddress,
             'user_agent'        => 'unknown',
@@ -296,7 +301,7 @@ class LoggerTest extends TestCase
         $loggerBuilder = new LoggerBuilder();
         $loggerBuilder->setMaxFiles(2);
         $logger = $loggerBuilder->build();
-        $logger->info('testSetTraceIdIsOutput', $context);
+        $logger->info('testCanSetMaxFiles', $context);
 
         $resultJson = file_get_contents($this->defaultOutputFileName);
         $resultArray = json_decode($resultJson, true);
@@ -307,10 +312,11 @@ class LoggerTest extends TestCase
 
         $expectedLog = [
             'log_level'         => 'INFO',
-            'message'           => 'testSetTraceIdIsOutput',
+            'message'           => 'testCanSetMaxFiles',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 299,
+            'line'              => 304,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -321,6 +327,49 @@ class LoggerTest extends TestCase
 
         $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
         $this->assertSame(2, $logger->getMaxFiles());
+        $this->assertSame($expectedLog, $resultArray);
+    }
+
+    /**
+     * @test
+     */
+    public function canSetChannel()
+    {
+        $context = [
+            'animals' => '🐱🐶🐰🐱🐹',
+        ];
+
+        $expectedChannel = 'My Favorite Animals';
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setChannel($expectedChannel);
+        $logger = $loggerBuilder->build();
+        $logger->info('testCanSetChannel', $context);
+
+        $resultJson = file_get_contents($this->defaultOutputFileName);
+        $resultArray = json_decode($resultJson, true);
+
+        echo "\n ---- Output Log Begin ---- \n";
+        echo json_encode($resultArray, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
+        echo "\n ---- Output Log End   ---- \n";
+
+        $expectedLog = [
+            'log_level'         => 'INFO',
+            'message'           => 'testCanSetChannel',
+            'channel'           => $expectedChannel,
+            'trace_id'          => $logger->getTraceId(),
+            'file'              => __FILE__,
+            'line'              => 347,
+            'context'           => $context,
+            'remote_ip_address' => '127.0.0.1',
+            'user_agent'        => 'unknown',
+            'datetime'          => $resultArray['datetime'],
+            'timezone'          => date_default_timezone_get(),
+            'process_time'      => $resultArray['process_time'],
+        ];
+
+        $this->assertSame($expectedChannel, $logger->getMonologInstance()->getName());
+        $this->assertSame($expectedChannel, $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }
 }

@@ -19,6 +19,7 @@ class JsonFormatter extends BaseJsonFormatter
         $formattedRecord = [
             'log_level'         => $record['level_name'],
             'message'           => $record['message'],
+            'channel'           => $record['channel'],
             'trace_id'          => $record['extra']['trace_id'],
             'file'              => $record['extra']['file'],
             'line'              => $record['extra']['line'],

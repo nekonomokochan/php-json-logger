@@ -94,6 +94,7 @@ class ExtendedMonologTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => 'outputInfoLogTest',
+            'channel'           => 'ExtendedMonolog',
             'trace_id'          => 'ExtendedMonologTestTraceId',
             'file'              => __FILE__,
             'line'              => 85,
@@ -136,9 +137,10 @@ class ExtendedMonologTest extends TestCase
         $expectedLog = [
             'log_level'         => 'ERROR',
             'message'           => get_class($exception),
+            'channel'           => 'ExtendedMonolog',
             'trace_id'          => 'ExtendedMonologTestTraceId',
             'file'              => __FILE__,
-            'line'              => 126,
+            'line'              => 127,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',

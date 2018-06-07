@@ -50,6 +50,7 @@ It is output as follows.
 {
     "log_level": "INFO",
     "message": "🐱",
+    "channel": "PhpJsonLogger",
     "trace_id": "35b627ce-55e0-4729-9da0-fbda2a7d817d",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
     "line": 42,
@@ -106,6 +107,7 @@ It is output as follows.
 {
     "log_level": "INFO",
     "message": "testSetLogFileName",
+    "channel": "PhpJsonLogger",
     "trace_id": "20f39cdb-dbd8-470c-babd-093a2974d169",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
     "line": 263,
@@ -148,6 +150,7 @@ It is output as follows.
 {
     "log_level": "INFO",
     "message": "testSetTraceIdIsOutput",
+    "channel": "PhpJsonLogger",
     "trace_id": "MyTraceID",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
     "line": 214,
@@ -198,6 +201,38 @@ These are the same as `logLevel` defined in [Monolog](https://github.com/Seldaek
 - CRITICAL = 500
 - ALERT = 550
 - EMERGENCY = 600
+
+#### How to change channel
+
+Default channel is `PhpJsonLogger`.
+
+If you want to change the channel, you can change it with the following code.
+
+```php
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setChannel('My Favorite Animals');
+```
+
+For example, the output is as follows.
+
+```json
+{
+    "log_level": "INFO",
+    "message": "testCanSetChannel",
+    "channel": "My Favorite Animals",
+    "trace_id": "4b8aa070-a533-4376-9bf5-270c8fcc6d87",
+    "file": "\/home\/vagrant\/php-json-logger\/tests\/Logger\/LoggerTest.php",
+    "line": 347,
+    "context": {
+        "animals": "🐱🐶🐰🐱🐹"
+    },
+    "remote_ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "datetime": "2018-06-07 17:56:48.538117",
+    "timezone": "Asia\/Tokyo",
+    "process_time": 538.48695755004883
+}
+```
 
 #### How to change Log Rotation Date
 
@@ -274,6 +309,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows
 {
     "log_level": "INFO",
     "message": "outputInfoLogTest",
+    "channel": "ExtendedMonolog",
     "trace_id": "ExtendedMonologTestTraceId",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
     "line": 85,
@@ -339,6 +375,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows.
 {
     "log_level": "ERROR",
     "message": "Exception",
+    "channel": "PhpJsonLogger",
     "trace_id": "ExtendedMonologTestTraceId",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
     "line": 126,

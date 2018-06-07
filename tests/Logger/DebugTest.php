@@ -61,6 +61,7 @@ class DebugTest extends TestCase
         $expectedLog = [
             'log_level'         => 'DEBUG',
             'message'           => '🐶',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 52,

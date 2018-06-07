@@ -62,6 +62,7 @@ class ErrorTest extends TestCase
         $expectedLog = [
             'log_level'         => 'ERROR',
             'message'           => 'Exception',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 53,

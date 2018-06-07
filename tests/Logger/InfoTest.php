@@ -66,6 +66,7 @@ class InfoTest extends TestCase
         $expectedLog = [
             'log_level'         => 'INFO',
             'message'           => '🐱',
+            'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
             'line'              => 57,
