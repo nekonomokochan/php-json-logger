@@ -1,5 +1,5 @@
 <?php
-namespace Nekonomokochan\Tests;
+namespace Nekonomokochan\Tests\Logger;
 
 use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
 use PHPUnit\Framework\TestCase;
