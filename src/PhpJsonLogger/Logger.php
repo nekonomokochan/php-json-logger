@@ -91,7 +91,7 @@ class Logger
         };
 
         $this->monologInstance = new MonoLogger(
-            $this->channel,
+            $this->getChannel(),
             [$rotating],
             [$introspection, $extraRecords]
         );
