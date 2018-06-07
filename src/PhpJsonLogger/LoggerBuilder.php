@@ -59,6 +59,11 @@ class LoggerBuilder
     const EMERGENCY = 600;
 
     /**
+     * @see \Monolog\Logger::$name
+     */
+    const DEFAULT_CHANNEL = 'PhpJsonLogger';
+
+    /**
      * @see \Monolog\Processor\IntrospectionProcessor::$skipClassesPartials
      */
     const DEFAULT_SKIP_CLASSES_PARTIALS = ['Nekonomokochan\\PhpJsonLogger\\'];
@@ -77,6 +82,12 @@ class LoggerBuilder
      * @var string
      */
     private $traceId;
+
+    /**
+     * @var string
+     * @see \Monolog\Logger::$name
+     */
+    private $channel;
 
     /**
      * @var int
@@ -114,8 +125,9 @@ class LoggerBuilder
     public function __construct(string $traceId = '')
     {
         $this->traceId = $traceId;
-        $this->logLevel = self::INFO;
-        $this->fileName = '/tmp/php-json-logger.log';
+        $this->setChannel(self::DEFAULT_CHANNEL);
+        $this->setLogLevel(self::INFO);
+        $this->setFileName('/tmp/php-json-logger.log');
         $this->setSkipClassesPartials(self::DEFAULT_SKIP_CLASSES_PARTIALS);
         $this->setSkipStackFramesCount(self::DEFAULT_SKIP_STACK_FRAMES_COUNT);
         $this->setMaxFiles(self::DEFAULT_MAX_FILES);
@@ -135,6 +147,22 @@ class LoggerBuilder
     public function setTraceId(string $traceId)
     {
         $this->traceId = $traceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChannel(): string
+    {
+        return $this->channel;
+    }
+
+    /**
+     * @param string $channel
+     */
+    public function setChannel(string $channel)
+    {
+        $this->channel = $channel;
     }
 
     /**

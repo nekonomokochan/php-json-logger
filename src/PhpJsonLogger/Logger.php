@@ -21,6 +21,12 @@ class Logger
     private $traceId;
 
     /**
+     * @var string
+     * @see \Monolog\Logger::$name
+     */
+    private $channel;
+
+    /**
      * @var int
      */
     private $logLevel;
@@ -56,6 +62,7 @@ class Logger
     {
         $this->createdTime = microtime(true);
         $this->traceId = $builder->getTraceId();
+        $this->channel = $builder->getChannel();
         $this->generateTraceIdIfNeeded();
         $this->logFileName = $builder->getFileName();
         $this->logLevel = $builder->getLogLevel();
@@ -83,9 +90,8 @@ class Logger
             return $record;
         };
 
-        // TODO The channel should be configurable from outside
         $this->monologInstance = new MonoLogger(
-            'PhpJsonLogger',
+            $this->channel,
             [$rotating],
             [$introspection, $extraRecords]
         );
@@ -169,6 +175,14 @@ class Logger
     public function getTraceId(): string
     {
         return $this->traceId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChannel(): string
+    {
+        return $this->channel;
     }
 
     /**
