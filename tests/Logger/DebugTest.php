@@ -12,13 +12,27 @@ use PHPUnit\Framework\TestCase;
  */
 class DebugTest extends TestCase
 {
+    /**
+     * @var string
+     */
+    private $outputFileBaseName;
+
+    /**
+     * @var string
+     */
+    private $outputFileName;
+
+    /**
+     * Delete the log file used last time to test the contents of the log file
+     */
     public function setUp()
     {
         parent::setUp();
-        // Delete the log file to assert the log file
-        $defaultFile = '/tmp/php-json-logger-' . date('Y-m-d') . '.log';
-        if (file_exists($defaultFile)) {
-            unlink($defaultFile);
+        $this->outputFileBaseName = '/tmp/debug-log-test.log';
+        $this->outputFileName = '/tmp/debug-log-test-' . date('Y-m-d') . '.log';
+
+        if (file_exists($this->outputFileName)) {
+            unlink($this->outputFileName);
         }
     }
 
@@ -32,11 +46,12 @@ class DebugTest extends TestCase
         ];
 
         $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setFileName($this->outputFileBaseName);
         $loggerBuilder->setLogLevel(LoggerBuilder::DEBUG);
         $logger = $loggerBuilder->build();
         $logger->debug('🐶', $context);
 
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultJson = file_get_contents($this->outputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -48,7 +63,7 @@ class DebugTest extends TestCase
             'message'           => '🐶',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 37,
+            'line'              => 52,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',

@@ -12,13 +12,27 @@ use PHPUnit\Framework\TestCase;
  */
 class EmergencyTest extends TestCase
 {
+    /**
+     * @var string
+     */
+    private $outputFileBaseName;
+
+    /**
+     * @var string
+     */
+    private $outputFileName;
+
+    /**
+     * Delete the log file used last time to test the contents of the log file
+     */
     public function setUp()
     {
         parent::setUp();
-        // Delete the log file to assert the log file
-        $defaultFile = '/tmp/php-json-logger-' . date('Y-m-d') . '.log';
-        if (file_exists($defaultFile)) {
-            unlink($defaultFile);
+        $this->outputFileBaseName = '/tmp/emergency-log-test.log';
+        $this->outputFileName = '/tmp/emergency-log-test-' . date('Y-m-d') . '.log';
+
+        if (file_exists($this->outputFileName)) {
+            unlink($this->outputFileName);
         }
     }
 
@@ -28,17 +42,18 @@ class EmergencyTest extends TestCase
      */
     public function outputEmergencyLog()
     {
-        $exception = new \ErrorException('TestCritical', 500);
+        $exception = new \ErrorException('TestEmergency', 500);
         $context = [
             'name'  => 'keitakn',
             'email' => 'dummy@email.com',
         ];
 
         $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setFileName($this->outputFileBaseName);
         $logger = $loggerBuilder->build();
         $logger->emergency($exception, $context);
 
-        $resultJson = file_get_contents('/tmp/php-json-logger-' . date('Y-m-d') . '.log');
+        $resultJson = file_get_contents($this->outputFileName);
         $resultArray = json_decode($resultJson, true);
 
         echo "\n ---- Output Log Begin ---- \n";
@@ -50,7 +65,7 @@ class EmergencyTest extends TestCase
             'message'           => 'ErrorException',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 39,
+            'line'              => 54,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
@@ -58,10 +73,10 @@ class EmergencyTest extends TestCase
             'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],
             'errors'            => [
-                'message' => 'TestCritical',
+                'message' => 'TestEmergency',
                 'code'    => 500,
                 'file'    => __FILE__,
-                'line'    => 31,
+                'line'    => 45,
                 'trace'   => $resultArray['errors']['trace'],
             ],
         ];
