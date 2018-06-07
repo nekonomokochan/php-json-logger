@@ -202,6 +202,38 @@ These are the same as `logLevel` defined in [Monolog](https://github.com/Seldaek
 - ALERT = 550
 - EMERGENCY = 600
 
+#### How to change channel
+
+Default channel is `PhpJsonLogger`.
+
+If you want to change the channel, you can change it with the following code.
+
+```php
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setChannel('My Favorite Animals');
+```
+
+For example, the output is as follows.
+
+```json
+{
+    "log_level": "INFO",
+    "message": "testCanSetChannel",
+    "channel": "My Favorite Animals",
+    "trace_id": "4b8aa070-a533-4376-9bf5-270c8fcc6d87",
+    "file": "\/home\/vagrant\/php-json-logger\/tests\/Logger\/LoggerTest.php",
+    "line": 347,
+    "context": {
+        "animals": "🐱🐶🐰🐱🐹"
+    },
+    "remote_ip_address": "127.0.0.1",
+    "user_agent": "unknown",
+    "datetime": "2018-06-07 17:56:48.538117",
+    "timezone": "Asia\/Tokyo",
+    "process_time": 538.48695755004883
+}
+```
+
 #### How to change Log Rotation Date
 
 This is the default setting to save logs for 7 days.
