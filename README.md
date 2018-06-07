@@ -50,6 +50,7 @@ It is output as follows.
 {
     "log_level": "INFO",
     "message": "🐱",
+    "channel": "PhpJsonLogger",
     "trace_id": "35b627ce-55e0-4729-9da0-fbda2a7d817d",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
     "line": 42,
@@ -106,6 +107,7 @@ It is output as follows.
 {
     "log_level": "INFO",
     "message": "testSetLogFileName",
+    "channel": "PhpJsonLogger",
     "trace_id": "20f39cdb-dbd8-470c-babd-093a2974d169",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
     "line": 263,
@@ -148,6 +150,7 @@ It is output as follows.
 {
     "log_level": "INFO",
     "message": "testSetTraceIdIsOutput",
+    "channel": "PhpJsonLogger",
     "trace_id": "MyTraceID",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/LoggerTest.php",
     "line": 214,
@@ -274,6 +277,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows
 {
     "log_level": "INFO",
     "message": "outputInfoLogTest",
+    "channel": "ExtendedMonolog",
     "trace_id": "ExtendedMonologTestTraceId",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
     "line": 85,
@@ -339,6 +343,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows.
 {
     "log_level": "ERROR",
     "message": "Exception",
+    "channel": "PhpJsonLogger",
     "trace_id": "ExtendedMonologTestTraceId",
     "file": "\/home\/vagrant\/php-json-logger\/tests\/ExtendedMonologTest.php",
     "line": 126,
