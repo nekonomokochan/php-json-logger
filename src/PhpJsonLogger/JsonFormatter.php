@@ -75,10 +75,10 @@ class JsonFormatter extends BaseJsonFormatter
     }
 
     /**
-     * @param $createdTime
-     * @return float|int
+     * @param float $createdTime
+     * @return float
      */
-    private function calculateProcessTime($createdTime)
+    private function calculateProcessTime(float $createdTime): float
     {
         $time = microtime(true);
 

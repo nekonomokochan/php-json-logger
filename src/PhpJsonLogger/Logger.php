@@ -202,9 +202,9 @@ class Logger
     }
 
     /**
-     * @return int
+     * @return float
      */
-    public function getCreatedTime(): int
+    public function getCreatedTime(): float
     {
         return $this->createdTime;
     }

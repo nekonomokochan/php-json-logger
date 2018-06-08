@@ -75,6 +75,8 @@ It is output as follows.
 }
 ```
 
+The unit of `process_time` is ms(millisecond).
+
 #### How to change output filepath
 
 Default output filepath is `/tmp/php-json-logger-yyyy-mm-dd.log` .

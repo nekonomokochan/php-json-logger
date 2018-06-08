@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 - 2018-06-09
+Bug Fix
+- [Calculation of `process_time` was wrong so we fixed it](https://github.com/nekonomokochan/php-json-logger/pull/45)
+
 ## 0.1.0 - 2018-06-07
 - [Add channel to contents of log output](https://github.com/nekonomokochan/php-json-logger/pull/42).
 - Changed to rotate logs using RotatingFileHandler.
