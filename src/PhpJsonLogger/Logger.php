@@ -2,6 +2,7 @@
 namespace Nekonomokochan\PhpJsonLogger;
 
 use Monolog\Handler\RotatingFileHandler;
+use Monolog\Handler\SlackHandler;
 use Monolog\Logger as MonoLogger;
 use Monolog\Processor\IntrospectionProcessor;
 use Ramsey\Uuid\Uuid;
@@ -77,6 +78,20 @@ class Logger
         );
         $rotating->setFormatter($formatter);
 
+        $handlers = [
+            $rotating
+        ];
+
+        if ($builder->getSlackHandler() instanceof SlackHandler) {
+            $slack = $builder->getSlackHandler();
+            $slack->setFormatter($formatter);
+
+            array_push(
+                $handlers,
+                $slack
+            );
+        }
+
         $introspection = new IntrospectionProcessor(
             $this->getLogLevel(),
             $builder->getSkipClassesPartials(),
@@ -92,7 +107,7 @@ class Logger
 
         $this->monologInstance = new MonoLogger(
             $this->getChannel(),
-            [$rotating],
+            $handlers,
             [$introspection, $extraRecords]
         );
     }
