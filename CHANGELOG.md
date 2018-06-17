@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0 - 2018-06-17
+Feature
+- [Make it possible to notify Slack.](https://github.com/nekonomokochan/php-json-logger/pull/49)
+
 ## 0.1.1 - 2018-06-09
 Bug Fix
 - [Calculation of `process_time` was wrong so we fixed it](https://github.com/nekonomokochan/php-json-logger/pull/45)

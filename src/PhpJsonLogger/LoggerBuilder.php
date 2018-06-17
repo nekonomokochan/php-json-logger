@@ -118,6 +118,11 @@ class LoggerBuilder
     private $maxFiles;
 
     /**
+     * @var \Monolog\Handler\SlackHandler
+     */
+    private $slackHandler;
+
+    /**
      * LoggerBuilder constructor.
      *
      * @param string $traceId
@@ -243,6 +248,22 @@ class LoggerBuilder
     public function setMaxFiles(int $maxFiles)
     {
         $this->maxFiles = $maxFiles;
+    }
+
+    /**
+     * @return \Monolog\Handler\SlackHandler
+     */
+    public function getSlackHandler():? \Monolog\Handler\SlackHandler
+    {
+        return $this->slackHandler;
+    }
+
+    /**
+     * @param \Monolog\Handler\SlackHandler $slackHandler
+     */
+    public function setSlackHandler(\Monolog\Handler\SlackHandler $slackHandler)
+    {
+        $this->slackHandler = $slackHandler;
     }
 
     /**

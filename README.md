@@ -411,6 +411,36 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows.
 }
 ```
 
+### Notification To Slack
+
+To send the log to Slack please execute the following code.
+
+This code will be sent to slack if the log level is `CRITICAL` or higher.
+
+```php
+<?php
+use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
+use Nekonomokochan\PhpJsonLogger\SlackHandlerBuilder;
+
+$exception = new \Exception('TestException', 500);
+$context = [
+    'name'  => 'keitakn',
+    'email' => 'dummy@email.com',
+];
+
+$slackToken = 'YOUR_SLACK_TOKEN';
+$slackChannel = 'YOUR_SLACK_CHANNEL';
+
+$slackHandlerBuilder = new SlackHandlerBuilder($slackToken, $slackChannel);
+$slackHandlerBuilder->setLevel(LoggerBuilder::CRITICAL);
+
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setFileName($this->outputFileBaseName);
+$loggerBuilder->setSlackHandler($slackHandlerBuilder->build());
+$logger = $loggerBuilder->build();
+$logger->critical($exception, $context);
+```
+
 If you want to know more detailed usage, please look at `php-json-logger/tests/ExtendedMonologTest.php`.
 
 ## License
