@@ -5,6 +5,7 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SlackHandler;
 use Monolog\Logger as MonoLogger;
 use Monolog\Processor\IntrospectionProcessor;
+use Monolog\Processor\WebProcessor;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -82,16 +83,6 @@ class Logger
             $rotating
         ];
 
-        if ($builder->getSlackHandler() instanceof SlackHandler) {
-            $slack = $builder->getSlackHandler();
-            $slack->setFormatter($formatter);
-
-            array_push(
-                $handlers,
-                $slack
-            );
-        }
-
         $introspection = new IntrospectionProcessor(
             $this->getLogLevel(),
             $builder->getSkipClassesPartials(),
@@ -105,10 +96,34 @@ class Logger
             return $record;
         };
 
+        $processors = [
+            $introspection,
+            $extraRecords,
+        ];
+
+        if ($builder->getSlackHandler() instanceof SlackHandler) {
+            $slack = $builder->getSlackHandler();
+            $slack->setFormatter($formatter);
+
+            array_push(
+                $handlers,
+                $slack
+            );
+
+            $_SERVER['REQUEST_URI'] = '/test/hoge';
+            $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
+            $_SERVER['REQUEST_METHOD'] = 'GET';
+            $_SERVER['SERVER_NAME'] = 'aaa';
+            $_SERVER['HTTP_REFERER'] = 'qqqqqq';
+
+            $webProcessor = new WebProcessor();
+            array_push($processors, $webProcessor);
+        }
+
         $this->monologInstance = new MonoLogger(
             $this->getChannel(),
             $handlers,
-            [$introspection, $extraRecords]
+            $processors
         );
     }
 
