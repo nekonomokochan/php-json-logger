@@ -53,11 +53,27 @@ class SlackNotificationTest extends TestCase
         $slackHandlerBuilder = new SlackHandlerBuilder($slackToken, $slackChannel);
         $slackHandlerBuilder->setLevel(LoggerBuilder::CRITICAL);
 
+        $_SERVER['REQUEST_URI'] = '/tests/notifications';
+        $_SERVER['REMOTE_ADDR'] = '192.168.10.10';
+        $_SERVER['REQUEST_METHOD'] = 'POST';
+        $_SERVER['SERVER_NAME'] = 'cat-moko.localhost';
+        $_SERVER['HTTP_REFERER'] = 'https://github.com/nekonomokochan/php-json-logger/issues/50';
+        $_SERVER['SERVER_ADDR'] = '10.0.0.11';
+        $_SERVER['HTTP_USER_AGENT'] = 'Chrome';
+
         $loggerBuilder = new LoggerBuilder();
         $loggerBuilder->setFileName($this->outputFileBaseName);
         $loggerBuilder->setSlackHandler($slackHandlerBuilder->build());
         $logger = $loggerBuilder->build();
         $logger->critical($exception, $context);
+
+        unset($_SERVER['REQUEST_URI']);
+        unset($_SERVER['REMOTE_ADDR']);
+        unset($_SERVER['REQUEST_METHOD']);
+        unset($_SERVER['SERVER_NAME']);
+        unset($_SERVER['HTTP_REFERER']);
+        unset($_SERVER['SERVER_ADDR']);
+        unset($_SERVER['HTTP_USER_AGENT']);
 
         $resultJson = file_get_contents($this->outputFileName);
         $resultArray = json_decode($resultJson, true);
@@ -72,10 +88,10 @@ class SlackNotificationTest extends TestCase
             'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 60,
+            'line'              => 68,
             'context'           => $context,
-            'remote_ip_address' => '127.0.0.1',
-            'user_agent'        => 'unknown',
+            'remote_ip_address' => '192.168.10.10',
+            'user_agent'        => 'Chrome',
             'datetime'          => $resultArray['datetime'],
             'timezone'          => date_default_timezone_get(),
             'process_time'      => $resultArray['process_time'],

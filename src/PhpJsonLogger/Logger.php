@@ -5,6 +5,7 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SlackHandler;
 use Monolog\Logger as MonoLogger;
 use Monolog\Processor\IntrospectionProcessor;
+use Monolog\Processor\WebProcessor;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -82,16 +83,6 @@ class Logger
             $rotating
         ];
 
-        if ($builder->getSlackHandler() instanceof SlackHandler) {
-            $slack = $builder->getSlackHandler();
-            $slack->setFormatter($formatter);
-
-            array_push(
-                $handlers,
-                $slack
-            );
-        }
-
         $introspection = new IntrospectionProcessor(
             $this->getLogLevel(),
             $builder->getSkipClassesPartials(),
@@ -105,10 +96,30 @@ class Logger
             return $record;
         };
 
+        $processors = [
+            $introspection,
+            $extraRecords,
+        ];
+
+        if ($builder->getSlackHandler() instanceof SlackHandler) {
+            $slack = $builder->getSlackHandler();
+            $slack->setFormatter($formatter);
+
+            array_push(
+                $handlers,
+                $slack
+            );
+
+            $webProcessor = new WebProcessor();
+            $webProcessor->addExtraField('server_ip_address', 'SERVER_ADDR');
+            $webProcessor->addExtraField('user_agent', 'HTTP_USER_AGENT');
+            array_push($processors, $webProcessor);
+        }
+
         $this->monologInstance = new MonoLogger(
             $this->getChannel(),
             $handlers,
-            [$introspection, $extraRecords]
+            $processors
         );
     }
 
