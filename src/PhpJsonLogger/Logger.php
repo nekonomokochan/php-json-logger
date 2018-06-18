@@ -111,6 +111,8 @@ class Logger
             );
 
             $webProcessor = new WebProcessor();
+            $webProcessor->addExtraField('server_ip_address', 'SERVER_ADDR');
+            $webProcessor->addExtraField('user_agent', 'HTTP_USER_AGENT');
             array_push($processors, $webProcessor);
         }
 
