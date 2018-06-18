@@ -110,12 +110,6 @@ class Logger
                 $slack
             );
 
-            $_SERVER['REQUEST_URI'] = '/test/hoge';
-            $_SERVER['REMOTE_ADDR'] = '127.0.0.1';
-            $_SERVER['REQUEST_METHOD'] = 'GET';
-            $_SERVER['SERVER_NAME'] = 'aaa';
-            $_SERVER['HTTP_REFERER'] = 'qqqqqq';
-
             $webProcessor = new WebProcessor();
             array_push($processors, $webProcessor);
         }
