@@ -5,7 +5,6 @@ use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SlackHandler;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\WebProcessor;
-use Ramsey\Uuid\Uuid;
 
 /**
  * Trait MonologInstanceCreator
@@ -72,5 +71,5 @@ trait MonologInstanceCreator
             $handlers,
             $processors
         );
-    }   
+    }
 }
