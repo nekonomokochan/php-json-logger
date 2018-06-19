@@ -68,6 +68,7 @@ class NoticeTest extends TestCase
             'line'              => 53,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
+            'server_ip_address' => '127.0.0.1',
             'user_agent'        => 'unknown',
             'datetime'          => $resultArray['datetime'],
             'timezone'          => date_default_timezone_get(),
