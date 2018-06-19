@@ -4,7 +4,7 @@ namespace Nekonomokochan\Tests;
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Logger;
 use Monolog\Processor\IntrospectionProcessor;
-use Nekonomokochan\PhpJsonLogger\ErrorsContextFormat;
+use Nekonomokochan\PhpJsonLogger\ErrorsContextFormatter;
 use Nekonomokochan\PhpJsonLogger\JsonFormatter;
 use PHPUnit\Framework\TestCase;
 
@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
  */
 class ExtendedMonologTest extends TestCase
 {
-    use ErrorsContextFormat;
+    use ErrorsContextFormatter;
 
     /**
      * @var string

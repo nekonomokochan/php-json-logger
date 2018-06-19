@@ -15,7 +15,7 @@ use Ramsey\Uuid\Uuid;
  */
 class Logger
 {
-    use ErrorsContextFormat;
+    use ErrorsContextFormatter;
 
     /**
      * @var string
