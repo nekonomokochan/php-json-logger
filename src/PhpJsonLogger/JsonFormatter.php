@@ -10,6 +10,8 @@ use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
  */
 class JsonFormatter extends BaseJsonFormatter
 {
+    use ServerEnvExtractor;
+
     /**
      * @param array $record
      * @return array|mixed|string
@@ -24,7 +26,7 @@ class JsonFormatter extends BaseJsonFormatter
             'file'              => $record['extra']['file'],
             'line'              => $record['extra']['line'],
             'context'           => $record['context'],
-            'remote_ip_address' => $this->extractIp(),
+            'remote_ip_address' => $this->extractRemoteIpAddress(),
             'user_agent'        => $this->extractUserAgent(),
             'datetime'          => $record['datetime']->format('Y-m-d H:i:s.u'),
             'timezone'          => $record['datetime']->getTimezone()->getName(),
@@ -40,38 +42,6 @@ class JsonFormatter extends BaseJsonFormatter
         $json = $this->toJson($this->normalize($formattedRecord), true) . ($this->appendNewline ? "\n" : '');
 
         return $json;
-    }
-
-    /**
-     * @return string
-     */
-    private function extractIp()
-    {
-        if (array_key_exists('HTTP_X_FORWARDED_FOR', $_SERVER)) {
-            $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-
-            $ipList = explode(',', $ip);
-
-            return $ipList[0];
-        }
-
-        if (array_key_exists('REMOTE_ADDR', $_SERVER)) {
-            return $_SERVER['REMOTE_ADDR'];
-        }
-
-        return '127.0.0.1';
-    }
-
-    /**
-     * @return string
-     */
-    private function extractUserAgent()
-    {
-        if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
-            return $_SERVER['HTTP_USER_AGENT'];
-        }
-
-        return 'unknown';
     }
 
     /**

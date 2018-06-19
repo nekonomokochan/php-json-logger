@@ -1,11 +1,6 @@
 <?php
 namespace Nekonomokochan\PhpJsonLogger;
 
-use Monolog\Handler\RotatingFileHandler;
-use Monolog\Handler\SlackHandler;
-use Monolog\Logger as MonoLogger;
-use Monolog\Processor\IntrospectionProcessor;
-use Monolog\Processor\WebProcessor;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -15,7 +10,9 @@ use Ramsey\Uuid\Uuid;
  */
 class Logger
 {
-    use ErrorsContextFormat;
+    use ErrorsContextFormatter;
+
+    use MonologInstanceCreator;
 
     /**
      * @var string
@@ -39,11 +36,6 @@ class Logger
     private $monologInstance;
 
     /**
-     * @var int
-     */
-    private $createdTime;
-
-    /**
      * @var string
      */
     private $logFileName;
@@ -62,65 +54,14 @@ class Logger
      */
     public function __construct(LoggerBuilder $builder)
     {
-        $this->createdTime = microtime(true);
         $this->traceId = $builder->getTraceId();
-        $this->channel = $builder->getChannel();
         $this->generateTraceIdIfNeeded();
+        $this->channel = $builder->getChannel();
         $this->logFileName = $builder->getFileName();
         $this->logLevel = $builder->getLogLevel();
         $this->maxFiles = $builder->getMaxFiles();
 
-        $formatter = new JsonFormatter();
-
-        $rotating = new RotatingFileHandler(
-            $this->getLogFileName(),
-            $this->maxFiles,
-            $this->getLogLevel()
-        );
-        $rotating->setFormatter($formatter);
-
-        $handlers = [
-            $rotating
-        ];
-
-        $introspection = new IntrospectionProcessor(
-            $this->getLogLevel(),
-            $builder->getSkipClassesPartials(),
-            $builder->getSkipStackFramesCount()
-        );
-
-        $extraRecords = function ($record) {
-            $record['extra']['trace_id'] = $this->getTraceId();
-            $record['extra']['created_time'] = $this->getCreatedTime();
-
-            return $record;
-        };
-
-        $processors = [
-            $introspection,
-            $extraRecords,
-        ];
-
-        if ($builder->getSlackHandler() instanceof SlackHandler) {
-            $slack = $builder->getSlackHandler();
-            $slack->setFormatter($formatter);
-
-            array_push(
-                $handlers,
-                $slack
-            );
-
-            $webProcessor = new WebProcessor();
-            $webProcessor->addExtraField('server_ip_address', 'SERVER_ADDR');
-            $webProcessor->addExtraField('user_agent', 'HTTP_USER_AGENT');
-            array_push($processors, $webProcessor);
-        }
-
-        $this->monologInstance = new MonoLogger(
-            $this->getChannel(),
-            $handlers,
-            $processors
-        );
+        $this->monologInstance = $this->createMonologInstance($this->traceId, $builder);
     }
 
     /**
@@ -225,14 +166,6 @@ class Logger
     public function getMonologInstance()
     {
         return $this->monologInstance;
-    }
-
-    /**
-     * @return float
-     */
-    public function getCreatedTime(): float
-    {
-        return $this->createdTime;
     }
 
     /**

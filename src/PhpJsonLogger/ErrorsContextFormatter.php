@@ -2,11 +2,11 @@
 namespace Nekonomokochan\PhpJsonLogger;
 
 /**
- * Trait ErrorsContextFormat
+ * Trait ErrorsContextFormatter
  *
  * @package Nekonomokochan\PhpJsonLogger
  */
-trait ErrorsContextFormat
+trait ErrorsContextFormatter
 {
     /**
      * @param \Throwable $e
