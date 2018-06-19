@@ -68,6 +68,7 @@ It is output as follows.
         }
     },
     "remote_ip_address": "127.0.0.1",
+    "server_ip_address": "127.0.0.1",
     "user_agent": "unknown",
     "datetime": "2018-06-04 17:21:03.631409",
     "timezone": "Asia\/Tokyo",
@@ -119,6 +120,7 @@ It is output as follows.
         "rabbit": "🐰"
     },
     "remote_ip_address": "127.0.0.1",
+    "server_ip_address": "127.0.0.1",
     "user_agent": "unknown",
     "datetime": "2018-06-05 11:28:03.214995",
     "timezone": "Asia\/Tokyo",
@@ -160,6 +162,7 @@ It is output as follows.
         "name": "keitakn"
     },
     "remote_ip_address": "127.0.0.1",
+    "server_ip_address": "127.0.0.1",
     "user_agent": "unknown",
     "datetime": "2018-06-05 11:36:02.394269",
     "timezone": "Asia\/Tokyo",
@@ -229,6 +232,7 @@ For example, the output is as follows.
         "animals": "🐱🐶🐰🐱🐹"
     },
     "remote_ip_address": "127.0.0.1",
+    "server_ip_address": "127.0.0.1",
     "user_agent": "unknown",
     "datetime": "2018-06-07 17:56:48.538117",
     "timezone": "Asia\/Tokyo",
@@ -321,6 +325,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows
         "rabbit": "🐰"
     },
     "remote_ip_address": "127.0.0.1",
+    "server_ip_address": "127.0.0.1",
     "user_agent": "unknown",
     "datetime": "2018-06-06 17:14:26.042013",
     "timezone": "Asia\/Tokyo",
@@ -387,6 +392,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows.
         "rabbit": "🐰🐰🐰"
     },
     "remote_ip_address": "127.0.0.1",
+    "server_ip_address": "127.0.0.1",
     "user_agent": "unknown",
     "datetime": "2018-06-06 17:37:57.440757",
     "timezone": "Asia\/Tokyo",
