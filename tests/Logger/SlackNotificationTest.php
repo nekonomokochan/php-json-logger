@@ -91,6 +91,7 @@ class SlackNotificationTest extends TestCase
             'line'              => 68,
             'context'           => $context,
             'remote_ip_address' => '192.168.10.10',
+            'server_ip_address' => '10.0.0.11',
             'user_agent'        => 'Chrome',
             'datetime'          => $resultArray['datetime'],
             'timezone'          => date_default_timezone_get(),

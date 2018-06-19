@@ -32,6 +32,18 @@ trait ServerEnvExtractor
     /**
      * @return string
      */
+    public function extractServerIpAddress()
+    {
+        if (array_key_exists('SERVER_ADDR', $_SERVER)) {
+            return $_SERVER['SERVER_ADDR'];
+        }
+
+        return '127.0.0.1';
+    }
+
+    /**
+     * @return string
+     */
     public function extractUserAgent()
     {
         if (array_key_exists('HTTP_USER_AGENT', $_SERVER)) {
