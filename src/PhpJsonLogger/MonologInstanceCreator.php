@@ -72,13 +72,5 @@ trait MonologInstanceCreator
             $handlers,
             $processors
         );
-    }
-
-    /**
-     * @return string
-     */
-    private function generateTraceId()
-    {
-        return Uuid::uuid4()->toString();
-    }
+    }   
 }
