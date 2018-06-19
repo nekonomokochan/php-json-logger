@@ -36,11 +36,6 @@ class Logger
     private $monologInstance;
 
     /**
-     * @var int
-     */
-    private $createdTime;
-
-    /**
      * @var string
      */
     private $logFileName;
@@ -171,14 +166,6 @@ class Logger
     public function getMonologInstance()
     {
         return $this->monologInstance;
-    }
-
-    /**
-     * @return float
-     */
-    public function getCreatedTime(): float
-    {
-        return $this->createdTime;
     }
 
     /**
