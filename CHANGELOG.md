@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 - 2018-06-19
+Feature
+- [Added `server_ip_address` to log output](https://github.com/nekonomokochan/php-json-logger/pull/55)
+
 ## 1.0.0 - 2018-06-17
 Feature
 - [Make it possible to notify Slack.](https://github.com/nekonomokochan/php-json-logger/pull/49)
