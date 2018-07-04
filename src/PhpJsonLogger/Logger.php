@@ -107,6 +107,12 @@ class Logger extends \Monolog\Logger
      */
     public function error($e, array $context = [])
     {
+        if ($this->isErrorObject($e) === false) {
+            throw new \InvalidArgumentException(
+                $this->generateInvalidArgumentMessage(__METHOD__)
+            );
+        }
+
         $this->addError(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
@@ -116,6 +122,12 @@ class Logger extends \Monolog\Logger
      */
     public function critical($e, array $context = [])
     {
+        if ($this->isErrorObject($e) === false) {
+            throw new \InvalidArgumentException(
+                $this->generateInvalidArgumentMessage(__METHOD__)
+            );
+        }
+
         $this->addCritical(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
@@ -125,6 +137,12 @@ class Logger extends \Monolog\Logger
      */
     public function alert($e, array $context = [])
     {
+        if ($this->isErrorObject($e) === false) {
+            throw new \InvalidArgumentException(
+                $this->generateInvalidArgumentMessage(__METHOD__)
+            );
+        }
+
         $this->addAlert(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
@@ -134,6 +152,12 @@ class Logger extends \Monolog\Logger
      */
     public function emergency($e, array $context = [])
     {
+        if ($this->isErrorObject($e) === false) {
+            throw new \InvalidArgumentException(
+                $this->generateInvalidArgumentMessage(__METHOD__)
+            );
+        }
+
         $this->addEmergency(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
@@ -185,5 +209,27 @@ class Logger extends \Monolog\Logger
         if (empty($this->traceId)) {
             $this->traceId = Uuid::uuid4()->toString();
         }
+    }
+
+    /**
+     * @param $value
+     * @return bool
+     */
+    private function isErrorObject($value): bool
+    {
+        if ($value instanceof \Exception || $value instanceof \Error) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param string $method
+     * @return string
+     */
+    private function generateInvalidArgumentMessage(string $method)
+    {
+        return 'Please give the exception class to the ' . $method;
     }
 }
