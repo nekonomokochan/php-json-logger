@@ -78,7 +78,7 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }
 
@@ -123,7 +123,7 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }
 
@@ -164,7 +164,7 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame('MyTraceID', $logger->getTraceId());
         $this->assertSame($expectedLog, $resultArray);
     }
@@ -214,7 +214,7 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame(
             $outputFileBaseName,
             $logger->getLogFileName()
@@ -242,7 +242,7 @@ class LoggerTest extends TestCase
             file_exists($this->defaultOutputFileName)
         );
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame(500, $logger->getLogLevel());
     }
 
@@ -290,7 +290,7 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }
 
@@ -331,7 +331,7 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame(2, $logger->getMaxFiles());
         $this->assertSame($expectedLog, $resultArray);
     }
@@ -375,7 +375,6 @@ class LoggerTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame($expectedChannel, $logger->getMonologInstance()->getName());
         $this->assertSame($expectedChannel, $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }

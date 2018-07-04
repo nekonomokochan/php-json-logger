@@ -7,18 +7,18 @@ use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\WebProcessor;
 
 /**
- * Trait MonologInstanceCreator
+ * Trait MonologCreator
  *
  * @package Nekonomokochan\PhpJsonLogger
  */
-trait MonologInstanceCreator
+trait MonologCreator
 {
     /**
      * @param string $traceId
      * @param LoggerBuilder $loggerBuilder
-     * @return \Monolog\Logger
+     * @return array
      */
-    public function createMonologInstance(string $traceId, LoggerBuilder $loggerBuilder)
+    public function createConstructParams(string $traceId, LoggerBuilder $loggerBuilder): array
     {
         $formatter = new JsonFormatter();
 
@@ -66,10 +66,10 @@ trait MonologInstanceCreator
             array_push($processors, $webProcessor);
         }
 
-        return new \Monolog\Logger(
-            $loggerBuilder->getChannel(),
-            $handlers,
-            $processors
-        );
+        return [
+            'channel'    => $loggerBuilder->getChannel(),
+            'handlers'   => $handlers,
+            'processors' => $processors
+        ];
     }
 }

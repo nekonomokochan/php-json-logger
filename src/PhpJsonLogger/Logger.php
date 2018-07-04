@@ -8,11 +8,11 @@ use Ramsey\Uuid\Uuid;
  *
  * @package Nekonomokochan\PhpJsonLogger
  */
-class Logger
+class Logger extends \Monolog\Logger
 {
     use ErrorsContextFormatter;
 
-    use MonologInstanceCreator;
+    use MonologCreator;
 
     /**
      * @var string
@@ -29,11 +29,6 @@ class Logger
      * @var int
      */
     private $logLevel;
-
-    /**
-     * @var \Monolog\Logger
-     */
-    private $monologInstance;
 
     /**
      * @var string
@@ -61,16 +56,22 @@ class Logger
         $this->logLevel = $builder->getLogLevel();
         $this->maxFiles = $builder->getMaxFiles();
 
-        $this->monologInstance = $this->createMonologInstance($this->traceId, $builder);
+        $constructParams = $this->createConstructParams($this->traceId, $builder);
+
+        parent::__construct(
+            $constructParams['channel'],
+            $constructParams['handlers'],
+            $constructParams['processors']
+        );
     }
 
     /**
      * @param $message
      * @param $context
      */
-    public function debug($message, $context = [])
+    public function debug($message, array $context = [])
     {
-        $this->monologInstance->addDebug($message, $context);
+        $this->addDebug($message, $context);
     }
 
     /**
@@ -79,7 +80,7 @@ class Logger
      */
     public function info($message, array $context = [])
     {
-        $this->monologInstance->addInfo($message, $context);
+        $this->addInfo($message, $context);
     }
 
     /**
@@ -88,7 +89,7 @@ class Logger
      */
     public function notice($message, array $context = [])
     {
-        $this->monologInstance->addNotice($message, $context);
+        $this->addNotice($message, $context);
     }
 
     /**
@@ -97,43 +98,43 @@ class Logger
      */
     public function warning($message, array $context = [])
     {
-        $this->monologInstance->addWarning($message, $context);
+        $this->addWarning($message, $context);
     }
 
     /**
      * @param \Throwable $e
      * @param array $context
      */
-    public function error(\Throwable $e, array $context = [])
+    public function error($e, array $context = [])
     {
-        $this->monologInstance->addError(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
+        $this->addError(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
      * @param \Throwable $e
      * @param array $context
      */
-    public function critical(\Throwable $e, array $context = [])
+    public function critical($e, array $context = [])
     {
-        $this->monologInstance->addCritical(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
+        $this->addCritical(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
      * @param \Throwable $e
      * @param array $context
      */
-    public function alert(\Throwable $e, array $context = [])
+    public function alert($e, array $context = [])
     {
-        $this->monologInstance->addAlert(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
+        $this->addAlert(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
      * @param \Throwable $e
      * @param array $context
      */
-    public function emergency(\Throwable $e, array $context = [])
+    public function emergency($e, array $context = [])
     {
-        $this->monologInstance->addEmergency(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
+        $this->addEmergency(get_class($e), $this->formatPhpJsonLoggerErrorsContext($e, $context));
     }
 
     /**
@@ -158,14 +159,6 @@ class Logger
     public function getLogLevel(): int
     {
         return $this->logLevel;
-    }
-
-    /**
-     * @return \Monolog\Logger
-     */
-    public function getMonologInstance()
-    {
-        return $this->monologInstance;
     }
 
     /**
