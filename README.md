@@ -452,5 +452,20 @@ $logger = $loggerBuilder->build();
 $logger->critical($exception, $context);
 ```
 
+### Caution
+
+`\Nekonomokochan\PhpJsonLogger\Logger` is a subclass that extends `\Monolog\Logger`
+
+You can use it like `\Monolog\Logger`.
+
+However, for the following methods, you can pass only classes that extend `\Exception` or `\Error` as arguments.
+
+- `\Nekonomokochan\PhpJsonLogger\Logger::error()`
+- `\Nekonomokochan\PhpJsonLogger\Logger::critical()`
+- `\Nekonomokochan\PhpJsonLogger\Logger::alert()`
+- `\Nekonomokochan\PhpJsonLogger\Logger::emergency()`
+
+In case of violation, `\Nekonomokochan\PhpJsonLogger\Logger` will Throw `\Nekonomokochan\PhpJsonLogger\InvalidArgumentException`
+
 ## License
 MIT
