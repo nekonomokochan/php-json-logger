@@ -1,6 +1,7 @@
 <?php
 namespace Nekonomokochan\Tests\Logger;
 
+use Nekonomokochan\PhpJsonLogger\InvalidArgumentException;
 use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -65,7 +66,7 @@ class AlertTest extends TestCase
             'channel'           => 'PhpJsonLogger',
             'trace_id'          => $logger->getTraceId(),
             'file'              => __FILE__,
-            'line'              => 53,
+            'line'              => 54,
             'context'           => $context,
             'remote_ip_address' => '127.0.0.1',
             'server_ip_address' => '127.0.0.1',
@@ -77,12 +78,32 @@ class AlertTest extends TestCase
                 'message' => 'TestCritical',
                 'code'    => 500,
                 'file'    => __FILE__,
-                'line'    => 44,
+                'line'    => 45,
                 'trace'   => $resultArray['errors']['trace'],
             ],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
+    }
+
+    /**
+     * @test
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Please give the exception class to the Nekonomokochan\PhpJsonLogger\Logger::alert
+     */
+    public function invalidArgumentException()
+    {
+        $message = '';
+
+        $context = [
+            'name'  => 'keitakn',
+            'email' => 'dummy@email.com',
+        ];
+
+        $loggerBuilder = new LoggerBuilder();
+        $loggerBuilder->setFileName($this->outputFileBaseName);
+        $logger = $loggerBuilder->build();
+        $logger->alert($message, $context);
     }
 }

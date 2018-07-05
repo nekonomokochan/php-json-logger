@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.2.0 - 2018-07-05
+Feature
+- [Changed `Nekonomokochan\PhpJsonLogger\Logger` to a class extended `\Monolog\Logger`](https://github.com/nekonomokochan/php-json-logger/pull/60)
+
 ## 1.1.0 - 2018-06-19
 Feature
 - [Added `server_ip_address` to log output](https://github.com/nekonomokochan/php-json-logger/pull/55)

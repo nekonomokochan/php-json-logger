@@ -105,7 +105,7 @@ class SlackNotificationTest extends TestCase
             ],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }
 }

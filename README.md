@@ -336,6 +336,7 @@ It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows
 The following code is necessary to output `trace_id` and `process_time`.
 
 ```php
+<?php
 $extraRecords = function ($record) {
     $record['extra']['trace_id'] = 'ExtendedMonologTestTraceId';
     $record['extra']['created_time'] = microtime(true);
@@ -347,6 +348,7 @@ $extraRecords = function ($record) {
 The code below is the code necessary to normally display the stack trace with JSON.
 
 ```php
+<?php
 $introspection = new IntrospectionProcessor(
     Logger::INFO,
     ['Nekonomokochan\\PhpJsonLogger\\'],
@@ -357,6 +359,7 @@ $introspection = new IntrospectionProcessor(
 To output the stack trace to the log, execute the following code.
 
 ```php
+<?php
 $exception = new \Exception('ExtendedMonologTest.outputErrorLog', 500);
 $context = [
     'cat'    => '🐱(=^・^=)🐱',
@@ -377,6 +380,8 @@ This is necessary processing to format the error log into JSON and output it.
 This is the method implemented in `\Nekonomokochan\PhpJsonLogger\ErrorsContextFormat`.
 
 It is output to `extended-monolog-test-yyyy-mm-dd.log` as follows.
+
+If you want to know more detailed usage, please look at `php-json-logger/tests/ExtendedMonologTest.php`.
 
 ```json
 {
@@ -447,7 +452,20 @@ $logger = $loggerBuilder->build();
 $logger->critical($exception, $context);
 ```
 
-If you want to know more detailed usage, please look at `php-json-logger/tests/ExtendedMonologTest.php`.
+### Caution
+
+`\Nekonomokochan\PhpJsonLogger\Logger` is a subclass that extends `\Monolog\Logger`
+
+You can use it like `\Monolog\Logger`.
+
+However, for the following methods, you can pass only classes that extend `\Exception` or `\Error` as arguments.
+
+- `\Nekonomokochan\PhpJsonLogger\Logger::error()`
+- `\Nekonomokochan\PhpJsonLogger\Logger::critical()`
+- `\Nekonomokochan\PhpJsonLogger\Logger::alert()`
+- `\Nekonomokochan\PhpJsonLogger\Logger::emergency()`
+
+In case of violation, `\Nekonomokochan\PhpJsonLogger\Logger` will Throw `\Nekonomokochan\PhpJsonLogger\InvalidArgumentException`
 
 ## License
 MIT

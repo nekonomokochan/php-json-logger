@@ -74,7 +74,7 @@ class DebugTest extends TestCase
             'process_time'      => $resultArray['process_time'],
         ];
 
-        $this->assertSame('PhpJsonLogger', $logger->getMonologInstance()->getName());
+        $this->assertSame('PhpJsonLogger', $logger->getChannel());
         $this->assertSame($expectedLog, $resultArray);
     }
 }
