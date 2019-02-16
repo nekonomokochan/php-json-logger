@@ -3,6 +3,7 @@ namespace Nekonomokochan\PhpJsonLogger;
 
 use Monolog\Handler\RotatingFileHandler;
 use Monolog\Handler\SlackHandler;
+use Monolog\Handler\StreamHandler;
 use Monolog\Processor\IntrospectionProcessor;
 use Monolog\Processor\WebProcessor;
 
@@ -17,10 +18,12 @@ trait MonologCreator
      * @param string $traceId
      * @param LoggerBuilder $loggerBuilder
      * @return array
+     * @throws \Exception
      */
     public function createConstructParams(string $traceId, LoggerBuilder $loggerBuilder): array
     {
         $formatter = new JsonFormatter();
+        $handlers = [];
 
         $rotating = new RotatingFileHandler(
             $loggerBuilder->getFileName(),
@@ -29,9 +32,19 @@ trait MonologCreator
         );
         $rotating->setFormatter($formatter);
 
-        $handlers = [
-            $rotating
-        ];
+        if ($loggerBuilder->isUseInDocker()) {
+            $streamHandler = new StreamHandler('php://stdout', $loggerBuilder->getLogLevel());
+            $streamHandler->setFormatter($formatter);
+            array_push($handlers, $streamHandler);
+        } else {
+            $rotating = new RotatingFileHandler(
+                $loggerBuilder->getFileName(),
+                $loggerBuilder->getMaxFiles(),
+                $loggerBuilder->getLogLevel()
+            );
+            $rotating->setFormatter($formatter);
+            array_push($handlers, $rotating);
+        }
 
         $introspection = new IntrospectionProcessor(
             $loggerBuilder->getLogLevel(),

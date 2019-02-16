@@ -123,6 +123,11 @@ class LoggerBuilder
     private $slackHandler;
 
     /**
+     * @var boolean
+     */
+    private $useInDocker = false;
+
+    /**
      * LoggerBuilder constructor.
      *
      * @param string $traceId
@@ -264,6 +269,22 @@ class LoggerBuilder
     public function setSlackHandler(\Monolog\Handler\SlackHandler $slackHandler)
     {
         $this->slackHandler = $slackHandler;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isUseInDocker(): bool
+    {
+        return $this->useInDocker;
+    }
+
+    /**
+     * @param bool $useInDocker
+     */
+    public function setUseInDocker(bool $useInDocker): void
+    {
+        $this->useInDocker = $useInDocker;
     }
 
     /**
