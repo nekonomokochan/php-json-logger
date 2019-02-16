@@ -21,12 +21,12 @@
         }
     },
     "require": {
-        "php": "~7.0",
+        "php": "~7.1",
         "monolog/monolog": "^1.24",
         "ramsey/uuid": "^3.8"
     },
     "require-dev": {
-        "php": "~7.0",
+        "php": "~7.1",
         "phpunit/phpunit": "^7.5",
         "friendsofphp/php-cs-fixer": "^2.14",
         "php-coveralls/php-coveralls": "^2.1",
