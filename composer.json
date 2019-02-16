@@ -21,14 +21,14 @@
         }
     },
     "require": {
-        "php": ">= 7.1.0",
-        "monolog/monolog": "^1.23",
-        "ramsey/uuid": "^3.7"
+        "php": "~7.0",
+        "monolog/monolog": "^1.24",
+        "ramsey/uuid": "^3.8"
     },
     "require-dev": {
-        "php": ">= 7.0.0",
-        "phpunit/phpunit": "^7.1",
-        "friendsofphp/php-cs-fixer": "^2.11",
+        "php": "~7.0",
+        "phpunit/phpunit": "^7.5",
+        "friendsofphp/php-cs-fixer": "^2.14",
         "php-coveralls/php-coveralls": "^2.1",
         "phpunit/phpcov": "^5.0"
     },
