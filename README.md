@@ -452,6 +452,32 @@ $logger = $loggerBuilder->build();
 $logger->critical($exception, $context);
 ```
 
+### Use in Docker
+
+Please use `LoggerBuilder.setUseInDocker` in order to use it on Docker.
+
+When setUseInDocker is set to true, no file output is done and the log is output as `stdout`.
+
+```php
+<?php
+use Nekonomokochan\PhpJsonLogger\LoggerBuilder;
+
+$exception = new \Exception('TestException', 500);
+$context = [
+    'name'  => 'keitakn',
+    'email' => 'dummy@email.com',
+];
+
+$slackToken = 'YOUR_SLACK_TOKEN';
+$slackChannel = 'YOUR_SLACK_CHANNEL';
+
+$loggerBuilder = new LoggerBuilder();
+$loggerBuilder->setFileName($this->outputFileBaseName);
+$loggerBuilder->setUseInDocker(true);
+$logger = $loggerBuilder->build();
+$logger->critical($exception, $context);
+```
+
 ### Caution
 
 `\Nekonomokochan\PhpJsonLogger\Logger` is a subclass that extends `\Monolog\Logger`
