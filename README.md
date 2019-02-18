@@ -468,9 +468,6 @@ $context = [
     'email' => 'dummy@email.com',
 ];
 
-$slackToken = 'YOUR_SLACK_TOKEN';
-$slackChannel = 'YOUR_SLACK_CHANNEL';
-
 $loggerBuilder = new LoggerBuilder();
 $loggerBuilder->setFileName($this->outputFileBaseName);
 $loggerBuilder->setUseInDocker(true);
