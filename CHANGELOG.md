@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.1 - 2019-02-18
+Bug Fix
+- Since the wrong sample code was on `README.md`, delete it.
+
+## 1.3.0 - 2019-02-18
+Feature
+- [Enable to specify `stdout` as log output destination](https://github.com/nekonomokochan/php-json-logger/pull/64)
+
 ## 1.2.0 - 2018-07-05
 Feature
 - [Changed `Nekonomokochan\PhpJsonLogger\Logger` to a class extended `\Monolog\Logger`](https://github.com/nekonomokochan/php-json-logger/pull/60)
